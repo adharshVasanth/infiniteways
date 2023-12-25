@@ -1,17 +1,38 @@
 <html>
   <head>
     <title>
-      Hello there
+      Notion API integration example
     </title>
   </head>
   <body>
     <h1>
-      Hello world
+      Notion API integration example
     </h1>
     <p>
-      Lorem ipsum dolor sit amet....
+      This example uses packages: Wrangler from cloudflare to create a local worker server that also integrates @notionhq/client
+      &nbsp;that fetch data from notion api and integration.
     </p>
     <p>
+      <textarea class="input" placeholder="some awesome code">notion.databases.retrieve({ database_id: '4153efddccc84e3a80012ac7d36bbb2a' });</textarea>
+      <button onClick="fetchDatabase()">Go</button>
+      <style>
+        .output{
+          background-color: #f2f2f2;
+          display: block;
+          padding: 10px;
+          white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+          white-space: -pre-wrap; /* Opera 4-6 */
+          white-space: -o-pre-wrap; /* Opera 7 */
+          white-space: pre-wrap; /* css-3 */
+        }
+        .input {
+          background-color: #f2f2f2;
+          display: block;
+          padding: 10px;
+          width:100%;
+          margin-bottom: 10px;
+        }
+      </style>
       <pre class="output">
 
       </pre>
@@ -23,16 +44,16 @@
   crossorigin="anonymous"></script>
   <script>
     function fetchDatabase() {
-      return $.ajax(
+      var ajaxFunction =  $.ajax(
         {
           type: 'POST',
           method: 'POST',
-          url: 'https://data.infiniteways.workers.dev',
+          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
           dataType:'json',
           //data is sent as json to the server, but it reach there as form data
-          contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+          //contentType:'application/x-www-form-urlencoded; charset=UTF-8',
           //default data sending and recieving MIME typealthough data is sent as json from the worker
-          data: JSON.stringify({hello:'hello'}),
+          data: JSON.stringify({function:$('.input').val()}),
           beforeSend: function() {
             $('.output').html('start')
           },
@@ -47,6 +68,7 @@
           }, 
         }
       )
+      return ajaxFunction
     }
     fetchDatabase()
   </script>
