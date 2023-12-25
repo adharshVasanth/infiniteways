@@ -11,5 +11,43 @@
     <p>
       Lorem ipsum dolor sit amet....
     </p>
+    <p>
+      <pre class="output">
+
+      </pre>
+    </p>
   </body>
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  <script>
+    function fetchDatabase() {
+      return $.ajax(
+        {
+          type: 'POST',
+          method: 'POST',
+          url: 'https://data.infiniteways.workers.dev',
+          dataType:'json',
+          //data is sent as json to the server, but it reach there as form data
+          contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+          //default data sending and recieving MIME typealthough data is sent as json from the worker
+          data: JSON.stringify({hello:'hello'}),
+          beforeSend: function() {
+            $('.output').html('start')
+          },
+          success: function(xhr, status, result) {
+            $('.output').html(JSON.stringify([xhr, status, result],null,2))
+          },
+          error: function(xhr, status, error) {
+            $('.output').html(JSON.stringify([xhr, status, error],null,2))
+          },
+          complete: function() {
+            //$('.output').html('complete')
+          }, 
+        }
+      )
+    }
+    fetchDatabase()
+  </script>
 </html>
