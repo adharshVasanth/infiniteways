@@ -12,9 +12,21 @@
       This example uses packages: Wrangler from cloudflare to create a local worker server that also integrates @notionhq/client
       &nbsp;that fetch data from notion api and integration.
     </p>
-    <p>
-      <textarea class="input" placeholder="some awesome code">notion.databases.retrieve({ database_id: '4153efddccc84e3a80012ac7d36bbb2a' });</textarea>
-      <button onClick="fetchDatabase()">Go</button>
+    <p> 
+<form onSubmit="return false">
+  <textarea class="input" placeholder="some awesome code">
+{
+  "function": "databasesQuery",
+  "data": {
+    "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+    "entryCategory": "all",
+    "entryArchivedInclude": true,
+    "entryMaxNumber": 5
+  }
+}
+  </textarea>
+  <button class="trigger" type="submit" onClick="databaseQuery()">Go</button>
+</form>
       <style>
         .output{
           background-color: #f2f2f2;
@@ -26,6 +38,7 @@
           white-space: pre-wrap; /* css-3 */
         }
         .input {
+          height: 200px;
           background-color: #f2f2f2;
           display: block;
           padding: 10px;
@@ -34,7 +47,6 @@
         }
       </style>
       <pre class="output">
-
       </pre>
     </p>
   </body>
@@ -43,33 +55,45 @@
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
   crossorigin="anonymous"></script>
   <script>
-    function fetchDatabase() {
+    function databaseQuery() {
       var ajaxFunction =  $.ajax(
         {
           type: 'POST',
           method: 'POST',
-          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
+          url: 'http://127.0.0.1:8787'/*'https://data.infiniteways.workers.dev'*/,
           dataType:'json',
           //data is sent as json to the server, but it reach there as form data
-          //contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+          contentType:'application/x-www-form-urlencoded; charset=UTF-8',
           //default data sending and recieving MIME typealthough data is sent as json from the worker
-          data: JSON.stringify({function:$('.input').val()}),
+          data: $('.input').val(),
           beforeSend: function() {
-            $('.output').html('start')
+            $('.trigger').html('start')
+            $('.output').html('')
           },
           success: function(xhr, status, result) {
-            $('.output').html(JSON.stringify([xhr, status, result],null,2))
+            $('.output').html(
+              `<b>query:</b><br/>`+
+              JSON.stringify(result.responseJSON.responseOutput.query,null,2)
+              +`<br/>
+-------------------------------------------------------------------------
+              <br/><b>output:</b><br/>`+
+              JSON.stringify(result.responseJSON.responseOutput.responseDataIdSuperset,null,2)
+            )
+            console.log(result.responseJSON)
           },
           error: function(xhr, status, error) {
             $('.output').html(JSON.stringify([xhr, status, error],null,2))
+            $('.trigger').html('error')
+            setTimeout(function(){$('.trigger').html('Go')},1000)
           },
           complete: function() {
-            //$('.output').html('complete')
+            $('.trigger').html('complete')
+            setTimeout(function(){$('.trigger').html('Go')},1000)
           }, 
         }
       )
       return ajaxFunction
     }
-    fetchDatabase()
+    databaseQuery()
   </script>
 </html>
