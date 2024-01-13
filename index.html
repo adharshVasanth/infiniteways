@@ -94,7 +94,17 @@
     "entryCategory": "all",
     "entryArchivedInclude": true,
     "entryMaxNumber": 5,
-    "entryDisplay": "grid"
+    "entryDisplay": "grid",
+    "pagination": {
+      "enable": true
+    }
+  },
+  "output": {
+    "element": ".notion-hq-output",
+    "console": {
+      "enable": true,
+      "element": ".notion-hq-output-formatted"
+    }
   }
 }
           </textarea>
@@ -114,12 +124,15 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
-    var notionHqQueryString = $('.notion-hq-input').val();
-    $('.notion-hq-trigger-btn').on('click',function(){
-      var notionHqQueryString = $('.notion-hq-input').val();
-      notionHqQuery(notionHqQueryString)
+    $(document).ready(function() {
+      window.requestInput = $('.notion-hq-input').val()
+      notionHqQuery(window.requestInput)
     })
-    function notionHqQuery(notionHqQueryString) {
+    $('.notion-hq-trigger-btn').on('click', function() {
+      window.requestInput = $('.notion-hq-input').val()
+      notionHqQuery(window.requestInput)
+    })
+    function notionHqQuery(requestInput) {
       var ajaxFunction =  $.ajax(
         {
           type: 'POST',
@@ -129,25 +142,27 @@
           //data is sent as json to the server, but it reach there as form data
           contentType:'application/x-www-form-urlencoded; charset=UTF-8',
           //default data sending and recieving MIME typealthough data is sent as json from the worker
-          data: notionHqQueryString,
+          data: requestInput,
           /*data sent from the input as a json string no need for stringify it*/
           beforeSend: function() {
-            $('.notion-hq-trigger-btn').html('start')
-            $('.notion-hq-output').html('')
+            var requestInput = JSON.parse(window.requestInput)
+            console.log(`notionHqQuery(${requestInput})`)
+            $(requestInput.output.element).html('empty')
+            $(requestInput.output.console.element).html('empty')
           },
           success: function(xhr, status, result/*result is recieved as object but sent as json from worker*/) {
-            var _function = xhr.requestInput.function
+            var _function = xhr.responseOutput.function
             if(_function == 'databasesQuery') {
-              var _data = xhr.responseOutput.responseData
+              var _data = xhr.responseOutput.data.responseData
               var length = _data.length
               var _outputData = `
-              <h3>found ${length} results in "${xhr.requestInput.data.entryCategory}"</h3>
+              <h3>found ${length} results in "${xhr.responseOutput.data.entryCategory}"</h3>
               `
-              if(!xhr.requestInput.data.entryArchivedInclude) {
+              if(!xhr.responseOutput.data.entryArchivedInclude) {
                 _outputData += `excluding archived<br/><br/>`
               }
-              for(let i = 0; i < length; i++) {
-                if(xhr.requestInput.data.entryDisplay == 'grid') {
+              for(let i = 0; i < length; i++) {//create entries loop
+                if(xhr.responseOutput.data.entryDisplay == 'grid') {
                   _outputData += `
                     <div class="databases-query-entry d-inline-block">
                       <div class="database-query-entry--header p-3 h6">
@@ -181,34 +196,35 @@
                 }
               }
             }
-            $('.notion-hq-output').html(_outputData)
-            //console.log([{xhr}, {status}, {result}])
-            var formatterConfig = {
-              hoverPreviewEnabled: false,
-              hoverPreviewArrayCount: 100,
-              hoverPreviewFieldCount: 5,
-              theme: 'dark',
-              animateOpen: true,
-              animateClose: true,
-              useToJSON: true
+            $(xhr.responseOutput.output.element).html(_outputData)
+            if(xhr.responseOutput.output.console.enable) {//enable console and diagnostics
+              //console.log([{xhr}, {status}, {result}])
+              var formatterConfig = {
+                hoverPreviewEnabled: false,
+                hoverPreviewArrayCount: 100,
+                hoverPreviewFieldCount: 5,
+                theme: 'dark',
+                animateOpen: true,
+                animateClose: true,
+                useToJSON: true
+              }
+              result.responseText = "truncated"
+              const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
+              $(xhr.responseOutput.output.console.element).html(formatter.render())
+            }else{
+              $(xhr.responseOutput.output.console.element).html('')
             }
-            result.responseText = "truncated"
-            const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
-            $('.notion-hq-output-formatted').html(formatter.render())
           },
           error: function(xhr, status, error) {
-            $('.notion-hq-trigger-btn').html('error')
             console.log([{xhr}, {status}, {error}])
-            setTimeout(function(){$('.notion-hq-trigger-btn').html('Go')},1000)
+            console.log('notionHqQuery() error')
           },
           complete: function() {
-            $('.notion-hq-trigger-btn').html('complete')
-            setTimeout(function(){$('.notion-hq-trigger-btn').html('Go')},1000)
-          }, 
+            console.log('notionHqQuery() complete')
+          },
         }
       )
       return ajaxFunction
     }
-    notionHqQuery(notionHqQueryString)
   </script>
 </html>
