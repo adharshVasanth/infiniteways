@@ -17,7 +17,7 @@
         margin: 10px 0px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
       }
-      .notion-hq-output-formatted{
+      .notion-hq-output--formatted{
         background-color: #161616;
         display: block;
         padding: 10px;
@@ -26,7 +26,7 @@
         white-space: -o-pre-wrap; /* Opera 7 */
         white-space: pre-wrap; /* css-3 */
       }
-      #notion-hq-input {
+      #notion-hq-input--input {
         height: 300px;
         background-color: #e6e6e6;
         margin-bottom: 10px;
@@ -69,24 +69,30 @@
     </h2>
     <p>
       <ul>
+        <li>Pagination: prev button, next button, indicator, train needs debugging </li>
         <li>A form that can be used to make the json string/ query</li>
-        <li>Grid and table dislay</li>
-        <li>Pagination which is stable</li>
+        <li>integration of php get components and page systems</li>
+        <li>Grid and table display</li>
+        <li>Table fiter and sort</li>
+        <li>saving data as cookies</li>
         <li>A unified interface for data collection</li>
         <li>Page fetch, Page details fetch</li>
-        <li>Table fiter and sort</li>
         <li>Search widget, suggestions</li>
         <li>Loading spinners and placeholders</li>
-        <li>Error management</li>
+        <li>Error management and debugging</li>
         <li>unlikely: Users fetch, logins, web editor and publisher</li>
-        <li>Compacting code, testing and compatibility</li>
+        <li>Compacting code, testing and compatibility, security</li>
+        <li>speed checking and performance</li>
+        <li>design and ui, bootstrap and markdown</li>
+        <li>icons and fonts</li>
+        <li>barba</li>
       </ul>
     </p>
     <h2>Input</h2>
     <p> 
-      <form class="notion-hq-input-form" onSubmit="return false">
+      <form class="notion-hq-input" onSubmit="return false">
         <div class="form-floating">
-          <textarea id="notion-hq-input" class="form-control notion-hq-input" placeholder="input">
+          <textarea id="notion-hq-input--input" class="form-control notion-hq-input--input" placeholder="input">
 {
   "function": "databasesQuery",
   "data": {
@@ -94,30 +100,30 @@
     "entryCategory": "all",
     "entryArchivedInclude": true,
     "entryMaxNumber": 5,
-    "entryDisplay": "grid",
-    "pagination": {
-      "enable": true
-    }
+    "entryDisplay": "grid"
   },
   "output": {
     "element": ".notion-hq-output",
     "console": {
       "enable": true,
-      "element": ".notion-hq-output-formatted"
+      "element": ".notion-hq-output--formatted"
     }
+  },
+  "pagination": {
   }
 }
           </textarea>
-          <label for="notion-hq-input">notion-hq-input</label>
+          <label for="notion-hq-input--input">notion-hq-input--input</label>
         </div>
-        <button class="notion-hq-trigger-btn btn btn-primary" type="button" type="submit">Go</button>
+        <button class="notion-hq-trigger--btn btn btn-primary" type="button" type="submit">Go</button>
+        <button class="notion-hq-reset--btn btn btn-primary" type="button" type="submit">Reset</button>
       </form>
     </p>
     <h2>Output</h2>
     <p>
       <div class="notion-hq-output"></div>
-      output from server: <br/>
-      <pre><code class="notion-hq-output-formatted"></code></pre>
+      <div class="py-1">output from server:</div>
+      <pre><code class="notion-hq-output--formatted"></code></pre>
     </p>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.umd.min.js"></script>
@@ -125,12 +131,36 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function() {
-      window.requestInput = $('.notion-hq-input').val()
-      notionHqQuery(window.requestInput)
+      window.requestInput = $('.notion-hq-input--input').val()//setting input value string as a global variable
+      notionHqQuery(window.requestInput)//calling function passing the variable into it
+      $('.notion-hq-reset--btn').click(function(){
+        var requestInput = {
+          "function": "databasesQuery",
+          "data": {
+            "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+            "entryCategory": "all",
+            "entryArchivedInclude": true,
+            "entryMaxNumber": 5,
+            "entryDisplay": "grid"
+          },
+          "output": {
+            "element": ".notion-hq-output",
+            "console": {
+              "enable": true,
+              "element": ".notion-hq-output--formatted"
+            }
+          },
+          "pagination": {
+          }
+        }
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
+        notionHqQuery(window.requestInput)
+      })
     })
-    $('.notion-hq-trigger-btn').on('click', function() {
-      window.requestInput = $('.notion-hq-input').val()
-      notionHqQuery(window.requestInput)
+    $('.notion-hq-trigger--btn').on('click', function() {
+      window.requestInput = $('.notion-hq-input--input').val()//setting input value string as a global variable
+      notionHqQuery(window.requestInput)//calling function passing the variable into it
     })
     function notionHqQuery(requestInput) {
       var ajaxFunction =  $.ajax(
@@ -138,54 +168,79 @@
           type: 'POST',
           method: 'POST',
           url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
-          dataType:'json',
-          //data is sent as json to the server, but it reach there as form data
-          contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-          //default data sending and recieving MIME typealthough data is sent as json from the worker
-          data: requestInput,
-          /*data sent from the input as a json string no need for stringify it*/
+          dataType:'json',//data is sent as json to the server, but it reach there as object
+          contentType:'application/x-www-form-urlencoded; charset=UTF-8',//default data sending and recieving MIME type although data is sent as json from the worker
+          data: requestInput,//data sent from the input as a json string no need for stringify it
           beforeSend: function() {
-            var requestInput = JSON.parse(window.requestInput)
-            console.log(`notionHqQuery(${requestInput})`)
-            $(requestInput.output.element).html('empty')
-            $(requestInput.output.console.element).html('empty')
+              var requestInput = JSON.parse(window.requestInput)
+              $('.notion-hq-input--inputm, .notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',true)
+              $(requestInput.output.element).html(
+                `
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                `
+              )
+              $(requestInput.output.console.element).html(
+                `
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                `
+              )
+              $(document).off("click",'.pagination-button--previous')
+              $(document).off("click",'.pagination-button--next')
+              $(document).off("click",'.page-train--button')
+              console.log(`notionHqQuery(requestInput) start`)
+
           },
-          success: function(xhr, status, result/*result is recieved as object but sent as json from worker*/) {
+          success: function(xhr, status, result) {//recieved as object but sent as json from worker
+            //function recieved
             var _function = xhr.responseOutput.function
             if(_function == 'databasesQuery') {
-              var _data = xhr.responseOutput.data.responseData
-              var length = _data.length
+              //response obtained as xhr
+              var _entry_category = xhr.responseOutput.data.entryCategory
+              var _entry_archived_include = xhr.responseOutput.data.entryArchivedInclude
+              var _entry_display = xhr.responseOutput.data.entryDisplay
+              var _response_data = xhr.responseOutput.data.responseData
+              var _response_data_length = _response_data.length
+              //output data defined, added more elements sequentially
               var _outputData = `
-              <h3>found ${length} results in "${xhr.responseOutput.data.entryCategory}"</h3>
+                <h3>found ${_response_data_length} results in "${_entry_category}"</h3>
               `
-              if(!xhr.responseOutput.data.entryArchivedInclude) {
+              if(!_entry_archived_include) {
                 _outputData += `excluding archived<br/><br/>`
               }
-              for(let i = 0; i < length; i++) {//create entries loop
-                if(xhr.responseOutput.data.entryDisplay == 'grid') {
+              //creating display loops
+              for(let i = 0; i < _response_data_length; i++) {//create entries loop
+                if(_entry_display == 'grid') {
                   _outputData += `
                     <div class="databases-query-entry d-inline-block">
                       <div class="database-query-entry--header p-3 h6">
-                        ${_data[i].properties.Category.select.name}
+                        ${_response_data[i].properties.Category.select.name}
                       </div>
                       <div class="database-query-entry--image-container">
-                        <img class="database-query-entry--image" src="${_data[i].cover.file.url}"></img>
+                        <img class="database-query-entry--image" src="${_response_data[i].cover.file.url}"></img>
                       </div>
                       <div class="databases-query-entry--title h4 p-3">
-                        ${_data[i].icon.emoji}&nbsp;${_data[i].properties.Name.title[0].plain_text}
+                        ${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}
                       </div>
                       <div class="databases-query-entry--id font-monospace p-3 d-none">
-                        ${_data[i].id}
+                        ${_response_data[i].id}
                       </div>
                       <div class="databases-query-entry--created-time p-3">
-                        Created on: ${_data[i].created_time}
+                        Created on: ${_response_data[i].created_time}
                       </div>
                       <div class="databases-query-entry--author-continer p-3">
-                        <img class="databases-query-entry--author-avatar" src="${_data[i].properties.Author.people[0].avatar_url}"></img>&nbsp;
-                        <span class="databases-query-entry--author-name">${_data[i].properties.Author.people[0].name}</span>
+                        <img class="databases-query-entry--author-avatar" src="${_response_data[i].properties.Author.people[0].avatar_url}"></img>&nbsp;
+                        <span class="databases-query-entry--author-name">${_response_data[i].properties.Author.people[0].name}</span>
                       </div>
                       <div class="databases-query-entry--link p-3">
-                        <a href="${_data[i].public_url}" target=new">Link</a>
+                        <a href="${_response_data[i].public_url}" target=new">Link</a>
                       </div>
                     </div>
                   `
@@ -195,10 +250,92 @@
                   `
                 }
               }
-            }
+              //pagination section
+              var _pagination = xhr.responseOutput.pagination
+              var _full_list = _pagination.full_list
+              var _current_list = _pagination.current_list
+              var _page_size = _pagination.page_size
+              //conditions
+              if(_full_list.length > _current_list.length) {
+                var indexNow = _full_list.indexOf(_current_list[0])//finding the index of first visible element
+                var number_of_pages = Math.ceil(_full_list.length/_page_size)//approx number of pages
+                var indexPerc = indexNow/_full_list.length//approx percentage covered
+                var start_cursors = filterNthElements(_full_list,_page_size)//an array of all the index entries
+                var pageNow = Math.ceil(indexPerc*number_of_pages)//current page estimated
+                if (pageNow == 0) {
+                  pageNow = 1
+                }
+                function filterNthElements(array, n) {
+                  return array.filter((_, index) => (index) % n === 0);
+                }
+                // Example usage:
+                //const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                //return array.filter((_, index) => (index + 1) % n === 0);
+                //const filteredArray = filterNthElements(originalArray, 3);
+                var pageTrain = ''//train section
+                for(let i = 0; i < number_of_pages; i++) {
+                  pageTrain += `<button data-start-cursor="${start_cursors[i]}" data-index="${i}" class="btn mx-1 btn-outline-primary page-train--button">${i+1}</button>`
+                }
+                //a focus tweak
+                setTimeout(function(){$('.page-train--button[data-index="'+(pageNow-1)+'"]').addClass('active')},1000)
+                //page train button trigger
+                $(document).on("click",'.page-train--button', function() {
+                  var requestInput = JSON.parse(window.requestInput)
+                  requestInput.pagination.enable = true
+                  requestInput.pagination.start_cursor = $(this).attr('data-start-cursor')
+                  requestInput = JSON.stringify(requestInput,null,2)
+                  $('.notion-hq-input--input').val(requestInput)
+                  window.requestInput = requestInput
+                  notionHqQuery(window.requestInput)
+                })
+                //prev button trigger
+                $(document).on("click",'.pagination-button--previous', function() {
+                  var requestInput = JSON.parse(window.requestInput)
+                  requestInput.pagination.enable = true
+                  requestInput.pagination.start_cursor = $(this).attr('data-prev')
+                  requestInput = JSON.stringify(requestInput,null,2)
+                  $('.notion-hq-input--input').val(requestInput)
+                  window.requestInput = requestInput
+                  notionHqQuery(window.requestInput)
+                })
+                //next button trigger
+                $(document).on("click",'.pagination-button--next', function() {
+                  var requestInput = JSON.parse(window.requestInput)
+                  requestInput.pagination.enable = true
+                  requestInput.pagination.start_cursor = $(this).attr('data-next')
+                  requestInput = JSON.stringify(requestInput,null,2)
+                  $('.notion-hq-input--input').val(requestInput)
+                  window.requestInput = requestInput
+                  notionHqQuery(window.requestInput)
+                })
+                _outputData += `
+                  <div class="pagination py-2">
+                `
+                if(indexNow != 0) {
+                  nextIndex = indexNow - _page_size
+                  var prev_cursor = _full_list[nextIndex]
+                  _outputData += `
+                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous">Previous</button>
+                  `
+                }
+                _outputData += `
+                    <div class="pagination--train">${pageTrain}</div>
+                `
+                if(_pagination.has_more) {
+                  _outputData += `
+                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next">Next</button>
+                  `
+                }
+                _outputData += `
+                    <div class="p-2 pagination--indicator">${pageNow} / ${number_of_pages}</div>
+                `
+                _outputData += `
+                  </div>
+                `
+              }
+            }//databasesQuery end
             $(xhr.responseOutput.output.element).html(_outputData)
             if(xhr.responseOutput.output.console.enable) {//enable console and diagnostics
-              //console.log([{xhr}, {status}, {result}])
               var formatterConfig = {
                 hoverPreviewEnabled: false,
                 hoverPreviewArrayCount: 100,
@@ -209,7 +346,9 @@
                 useToJSON: true
               }
               result.responseText = "truncated"
-              const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
+              //console.log([{xhr}, {status}, {result}])
+              //const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
+              const formatter = new JSONFormatter({xhr},3,formatterConfig);
               $(xhr.responseOutput.output.console.element).html(formatter.render())
             }else{
               $(xhr.responseOutput.output.console.element).html('')
@@ -220,6 +359,7 @@
             console.log('notionHqQuery() error')
           },
           complete: function() {
+            $('.notion-hq-input--inputm, .notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',false)
             console.log('notionHqQuery() complete')
           },
         }
