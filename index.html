@@ -10,27 +10,27 @@
       body {
         padding: 10px;
       }
-      .notion-hq-output{
+      .notion-hq-output, .notion-hq-input {
         background-color: #f2f2f2;
         padding: 20px;
         border: 1px #e2e3e5 solid;
         border-radius: 5px;
-        margin: 10px 0px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
       }
       .notion-hq-output--formatted{
         background-color: #161616;
         display: block;
-        padding: 10px;
+        padding: 20px;
+        border: 1px #e2e3e5 solid;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
         white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
         white-space: -pre-wrap; /* Opera 4-6 */
         white-space: -o-pre-wrap; /* Opera 7 */
         white-space: pre-wrap; /* css-3 */
       }
       #notion-hq-input--input {
-        height: 300px;
-        background-color: #e6e6e6;
-        margin-bottom: 10px;
+        height: 400px;
       }
       .databases-query-entry {
         width: 250px;
@@ -65,106 +65,114 @@
       This server acts a proxy to collect information from the notion Apiand sends back tha data to client. Client process this data and display it.&nbsp;
       The wrangler plugin helps to do the work of the worker on a local server. Nevertheless it should be deployed to the worker.&nbsp;
     </p>
+    <div class="container" style="max-width:100%">
+      <div class="row">
+        <div class="col-md-4">
+          <form class="notion-hq-input mb-3" onSubmit="return false">
+            <h2>Input</h2>
+            <br/>
+            <div class="form-floating mb-3">
+              <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control" id="database-id" placeholder="databaseId">
+              <label for="database-id">databaseId</label>
+            </div>
+            <div class="mb-3">
+              <label for="entry-category-select" class="form-label">entryCategory</label>
+              <select class="form-select entry-category-select" id="entry-category-select" aria-label="entryCategory">
+                <option selected value="all">All</option>
+                <option value="Hello">Hello</option>
+                <option value="You">You</option>
+                <option value="Travel">Travel</option>
+                <option value="Hey">Hey</option>
+              </select>
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input entry-archived-include" type="checkbox" role="switch" id="entry-archived-include" checked>
+              <label class="form-check-label" for="entry-archived-include">entryArchivedInclude</label>
+            </div>
+            <div class="mb-3">
+              <label for="entry-max-number" class="form-label">entryMaxNumber: <span class="entry-max-number-number">5</span></label>
+              <input type="range" value="5" class="form-range entry-max-number" min="3" max="10" step="1" id="entry-max-number">
+            </div>
+            <div class="btn-group mb-3" id="entry-display" role="group" aria-label="entryDisplay">
+              <input type="radio" class="btn-check" name="entry-display" value="grid" id="entry-display--grid" autocomplete="off" checked>
+              <label class="btn btn-outline-primary" for="entry-display--grid"><i class="bi-grid"></i></label>
+              <input type="radio" class="btn-check" name="entry-display" value="table" id="entry-display--table" autocomplete="off">
+              <label class="btn btn-outline-primary" for="entry-display--table"><i class="bi-table"></i></label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" disabled value=".notion-hq-output" class="form-control" id="output-element" placeholder="outputElement">
+              <label for="output-element">outputElement</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input console-enable" type="checkbox" role="switch" id="console-enable" checked>
+              <label class="form-check-label" for="console-enable">consoleEnable</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" disabled value=".notion-hq-output--formatted" class="form-control" id="console-element" placeholder="consoleElement">
+              <label for="console-element">consoleElement</label>
+            </div>
+            <div class="form-floating">
+              <textarea readonly id="notion-hq-input--input" class="form-control form-control-plaintext notion-hq-input--input" placeholder="input">
+    {
+      "function": "databasesQuery",
+      "data": {
+        "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+        "entryCategory": "all",
+        "entryArchivedInclude": true,
+        "entryMaxNumber": 5,
+        "entryDisplay": "grid"
+      },
+      "output": {
+        "element": ".notion-hq-output",
+        "console": {
+          "enable": true,
+          "element": ".notion-hq-output--formatted"
+        }
+      },
+      "pagination": {
+      }
+    }
+              </textarea>
+              <label for="notion-hq-input--input">Data sent</label>
+            </div>
+            <br/>
+            <button class="notion-hq-trigger--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
+            <button class="notion-hq-reset--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
+          </form>
+        </div>
+        <div class="col-md-8">
+          <div class="notion-hq-output mb-3"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+          <pre><code class="notion-hq-output--formatted"></code></pre>
+        </div>
+      </div>
+    </div>
     <h2>
       Further improvements
     </h2>
     <p>
       <ul>
-        <li>Pagination: prev button, next button, indicator, train needs debugging </li>
-        <li>A form that can be used to make the json string/ query</li>
-        <li>integration of php get components and page systems</li>
-        <li>Grid and table display</li>
         <li>Table fiter and sort</li>
         <li>saving data as cookies</li>
-        <li>A unified interface for data collection</li>
-        <li>Page fetch, Page details fetch</li>
-        <li>Search widget, suggestions</li>
         <li>Loading spinners and placeholders</li>
-        <li>Error management and debugging</li>
-        <li>unlikely: Users fetch, logins, web editor and publisher</li>
-        <li>Compacting code, testing and compatibility, security</li>
-        <li>speed checking and performance</li>
         <li>design and ui, bootstrap and markdown</li>
         <li>icons and fonts</li>
         <li>barba</li>
+        <br/>
+        <li>Error management and debugging</li>
+        <li>Compacting code, testing and compatibility, security</li>
+        <li>speed checking and performance</li>
+        <br/>
+        <li>A unified interface for data collection</li>
+        <li>integration of php get components and page systems</li>
+        <li>Page fetch, Page details fetch</li>
+        <li>Search widget, suggestions</li>
+        <li>Users fetch, logins, web editor and publisher</li>
+        <li>Feedback form using notion api</li>
       </ul>
-    </p>
-    <h2>Input</h2>
-    <p> 
-      <form class="notion-hq-input" onSubmit="return false">
-        <div class="form-floating mb-3">
-          <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control" id="database-id" placeholder="databaseId">
-          <label for="database-id">databaseId</label>
-        </div>
-        <div class="mb-3">
-          <label for="entry-category-select" class="form-label">entryCategory</label>
-          <select class="form-select entry-category-select" id="entry-category-select" aria-label="entryCategory">
-            <option selected value="all">All</option>
-            <option value="Hello">Hello</option>
-            <option value="You">You</option>
-            <option value="Travel">Travel</option>
-            <option value="Hey">Hey</option>
-          </select>
-        </div>
-        <div class="form-check form-switch mb-3">
-          <input class="form-check-input entry-archived-include" type="checkbox" role="switch" id="entry-archived-include" checked>
-          <label class="form-check-label" for="entry-archived-include">entryArchivedInclude</label>
-        </div>
-        <div class="mb-3">
-          <label for="entry-max-number" class="form-label">entryMaxNumber: <span class="entry-max-number-number">5</span></label>
-          <input type="range" value="5" class="form-range entry-max-number" min="3" max="10" step="1" id="entry-max-number">
-        </div>
-        <div class="btn-group mb-3" id="entry-display" role="group" aria-label="entryDisplay">
-          <input type="radio" class="btn-check" name="entry-display" value="grid" id="entry-display--grid" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="entry-display--grid"><i class="bi-grid"></i></label>
-          <input type="radio" class="btn-check" name="entry-display" value="table" id="entry-display--table" autocomplete="off">
-          <label class="btn btn-outline-primary" for="entry-display--table"><i class="bi-table"></i></label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" disabled value=".notion-hq-output" class="form-control" id="output-element" placeholder="outputElement">
-          <label for="output-element">outputElement</label>
-        </div>
-        <div class="form-check form-switch mb-3">
-          <input class="form-check-input console-enable" type="checkbox" role="switch" id="console-enable" checked>
-          <label class="form-check-label" for="console-enable">consoleEnable</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" disabled value=".notion-hq-output--formatted" class="form-control" id="console-element" placeholder="consoleElement">
-          <label for="console-element">consoleElement</label>
-        </div>
-        <div class="form-floating">
-          <textarea disabled id="notion-hq-input--input" class="form-control notion-hq-input--input" placeholder="input">
-{
-  "function": "databasesQuery",
-  "data": {
-    "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
-    "entryCategory": "all",
-    "entryArchivedInclude": true,
-    "entryMaxNumber": 5,
-    "entryDisplay": "grid"
-  },
-  "output": {
-    "element": ".notion-hq-output",
-    "console": {
-      "enable": true,
-      "element": ".notion-hq-output--formatted"
-    }
-  },
-  "pagination": {
-  }
-}
-          </textarea>
-          <label for="notion-hq-input--input">notion-hq-input--input</label>
-        </div>
-        <button class="notion-hq-trigger--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
-        <button class="notion-hq-reset--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
-      </form>
-    </p>
-    <h2>Output</h2>
-    <p>
-      <div class="notion-hq-output"></div>
-      <div class="py-1">output from server:</div>
-      <pre><code class="notion-hq-output--formatted"></code></pre>
     </p>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.umd.min.js"></script>
@@ -201,7 +209,7 @@
       $('.entry-max-number').on("change",function() {
         var requestInput = JSON.parse($('.notion-hq-input--input').val())
         $('.entry-max-number-number').html($(this).val())
-        requestInput.data.entryMaxNumber = $(this).val()
+        requestInput.data.entryMaxNumber = JSON.parse($(this).val())
         $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
         window.requestInput = $('.notion-hq-input--input').val()
       })
@@ -240,7 +248,7 @@
         {
           type: 'POST',
           method: 'POST',
-          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
+          url: 'http://127.0.0.1:8787'/*'https://data.infiniteways.workers.dev'*/,
           dataType:'json',//data is sent as json to the server, but it reach there as object
           contentType:'application/x-www-form-urlencoded; charset=UTF-8',//default data sending and recieving MIME type although data is sent as json from the worker
           data: requestInput,//data sent from the input as a json string no need for stringify it
@@ -280,54 +288,93 @@
               var _entry_archived_include = xhr.responseOutput.data.entryArchivedInclude
               var _entry_display = xhr.responseOutput.data.entryDisplay
               var _response_data = xhr.responseOutput.data.responseData
-              var _response_data_length = _response_data.length
-              //output data defined, added more elements sequentially
-              var _outputData = `
-                <h3>found ${_response_data_length} results in "${_entry_category}"</h3>
-              `
-              if(!_entry_archived_include) {
-                _outputData += `excluding archived<br/><br/>`
-              }
-              //creating display loops
-              for(let i = 0; i < _response_data_length; i++) {//create entries loop
-                if(_entry_display == 'grid') {
-                  _outputData += `
-                    <div class="databases-query-entry d-inline-block">
-                      <div class="database-query-entry--header p-3 h6">
-                        ${_response_data[i].properties.Category.select.name}
-                      </div>
-                      <div class="database-query-entry--image-container">
-                        <img class="database-query-entry--image" src="${_response_data[i].cover.file.url}"></img>
-                      </div>
-                      <div class="databases-query-entry--title h4 p-3">
-                        ${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}
-                      </div>
-                      <div class="databases-query-entry--id font-monospace p-3 d-none">
-                        ${_response_data[i].id}
-                      </div>
-                      <div class="databases-query-entry--created-time p-3">
-                        Created on: ${_response_data[i].created_time}
-                      </div>
-                      <div class="databases-query-entry--author-continer p-3">
-                        <img class="databases-query-entry--author-avatar" src="${_response_data[i].properties.Author.people[0].avatar_url}"></img>&nbsp;
-                        <span class="databases-query-entry--author-name">${_response_data[i].properties.Author.people[0].name}</span>
-                      </div>
-                      <div class="databases-query-entry--link p-3">
-                        <a href="${_response_data[i].public_url}" target=new">Link</a>
-                      </div>
-                    </div>
-                  `
-                }else {
-                  _outputData += `
-                  table
-                  `
-                }
-              }
               //pagination section
               var _pagination = xhr.responseOutput.pagination
               var _full_list = _pagination.full_list
               var _current_list = _pagination.current_list
               var _page_size = _pagination.page_size
+              //output data defined, added more elements sequentially
+              var _outputData = `
+                <h2>found ${_full_list.length} results in "${_entry_category}"</h2><br/>
+              `
+              if(!_entry_archived_include) {
+                _outputData += `excluding archived<br/>`
+              }
+              //creating display loops
+              if(_entry_display == 'grid') {
+                _outputData += `<div class="row">`
+                for(let i = 0; i < _response_data.length; i++) {
+                  if(_response_data[i].properties.Archived.checkbox){
+                    var archiveText = '<span class="badge bg-secondary">Archived</span>'
+                  }else{
+                    var archiveText = ''
+                  }
+                  _outputData += `
+                    <div class="col-lg-5 mb-2 me-2">
+                      <div class="card shadow-lg" style="overflow:hidden">
+                        <div class="card-img-c" style="height:150px;overflow:hidden;">
+                            <img src="${_response_data[i].cover.file.url}" class="card-img-top img-fluid position-relative top-50 start-50 translate-middle" alt="page image"/>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</h6>
+                            <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${_response_data[i].created_time}</code></p>
+                            <a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a>
+                        </div>
+                        <div class="card-footer">
+                            <code class="card-subtitle mb-2 text-muted">${_response_data[i].id}</code>
+                        </div>
+                      </div>
+                    </div>
+
+                  `
+                }
+                _outputData += `</div>`
+              }else {
+                _outputData += `
+                  <table class="table table-borderless table-hover post-list-table sortable-theme-minimal P-3" data-sortable>
+                    <thead>
+                        <tr>
+                            <th class="d-none" scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Archived</th>
+                            <th scope="col">Date created</th>
+                            <th scope="col" class="d-none">ID</th>
+                            <th scope="col">Link</th>
+                        </tr>
+                    </thead>
+                `
+                for(let i = 0; i < _response_data.length; i++) {
+                  if(_response_data[i].properties.Archived.checkbox){
+                    var archiveText = '<span class="badge bg-secondary">Archived</span>'
+                  }else{
+                    var archiveText = ''
+                  }
+                  _outputData += `
+                    <tr data-id="${_response_data[i].id}">
+                      <th class="d-none" data-sortable="false" scope="row">${(i+1)}</th>
+                      <td><h6>${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}</h6></td>
+                      <td><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</td>
+                      <td><span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span></td>
+                      <td>${archiveText}</td>
+                      <td data-value="${_response_data[i].created_time}"><span data-bs-custom-class="custom-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="${_response_data[i].created_time}</span></td>
+                      <td class="d-none"><pre>${_response_data[i].id}</pre></td>
+                      <td><a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a></td>
+                    </tr>
+                  `
+                }
+                _outputData += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <th data-sortable="false" colspan="8" class="text-center">${_full_list.length} results</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                `
+              }
               //conditions
               if(_full_list.length > _current_list.length) {
                 var indexNow = _full_list.indexOf(_current_list[0])//finding the index of first visible element
@@ -353,7 +400,29 @@
                   pageTrain += `<button data-start-cursor="${start_cursors[i]}" data-index="${i}" class="btn btn-primary page-train--button">${i+1}</button>`
                 }
                 pageTrain += '</div>'
-                //a focus tweak
+                _outputData += `
+                  <div class="pagination py-2">
+                `
+                if(indexNow != 0) {
+                  nextIndex = indexNow - _page_size
+                  var prev_cursor = _full_list[nextIndex]
+                  _outputData += `
+                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous"><i class="bi-arrow-left-circle"></i></button>
+                  `
+                }
+                _outputData += pageTrain
+                
+                if(_pagination.has_more) {
+                  _outputData += `
+                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next"><i class="bi-arrow-right-circle"></i></button>
+                  `
+                }
+                _outputData += `
+                    <div class="p-2 pagination--indicator">page ${pageNow} / ${number_of_pages}</div>
+                `
+                _outputData += `
+                  </div>
+                `//a focus tweak
                 setTimeout(function(){$('.page-train--button[data-index="'+(pageNow-1)+'"]').addClass('active')},1000)
                 //page train button trigger
                 $(document).on("click",'.page-train--button', function() {
@@ -385,29 +454,6 @@
                   window.requestInput = requestInput
                   notionHqQuery(window.requestInput)
                 })
-                _outputData += `
-                  <div class="pagination py-2">
-                `
-                if(indexNow != 0) {
-                  nextIndex = indexNow - _page_size
-                  var prev_cursor = _full_list[nextIndex]
-                  _outputData += `
-                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous"><i class="bi-arrow-left-circle"></i></button>
-                  `
-                }
-                _outputData += pageTrain
-                
-                if(_pagination.has_more) {
-                  _outputData += `
-                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next"><i class="bi-arrow-right-circle"></i></button>
-                  `
-                }
-                _outputData += `
-                    <div class="p-2 pagination--indicator">${pageNow} / ${number_of_pages}</div>
-                `
-                _outputData += `
-                  </div>
-                `
               }
             }//databasesQuery end
             $(xhr.responseOutput.output.element).html(_outputData)
