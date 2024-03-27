@@ -5,6 +5,7 @@
     </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
       body {
         padding: 10px;
@@ -91,8 +92,48 @@
     <h2>Input</h2>
     <p> 
       <form class="notion-hq-input" onSubmit="return false">
+        <div class="form-floating mb-3">
+          <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control" id="database-id" placeholder="databaseId">
+          <label for="database-id">databaseId</label>
+        </div>
+        <div class="mb-3">
+          <label for="entry-category-select" class="form-label">entryCategory</label>
+          <select class="form-select entry-category-select" id="entry-category-select" aria-label="entryCategory">
+            <option selected value="all">All</option>
+            <option value="Hello">Hello</option>
+            <option value="You">You</option>
+            <option value="Travel">Travel</option>
+            <option value="Hey">Hey</option>
+          </select>
+        </div>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input entry-archived-include" type="checkbox" role="switch" id="entry-archived-include" checked>
+          <label class="form-check-label" for="entry-archived-include">entryArchivedInclude</label>
+        </div>
+        <div class="mb-3">
+          <label for="entry-max-number" class="form-label">entryMaxNumber: <span class="entry-max-number-number">5</span></label>
+          <input type="range" value="5" class="form-range entry-max-number" min="3" max="10" step="1" id="entry-max-number">
+        </div>
+        <div class="btn-group mb-3" id="entry-display" role="group" aria-label="entryDisplay">
+          <input type="radio" class="btn-check" name="entry-display" value="grid" id="entry-display--grid" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="entry-display--grid"><i class="bi-grid"></i></label>
+          <input type="radio" class="btn-check" name="entry-display" value="table" id="entry-display--table" autocomplete="off">
+          <label class="btn btn-outline-primary" for="entry-display--table"><i class="bi-table"></i></label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" disabled value=".notion-hq-output" class="form-control" id="output-element" placeholder="outputElement">
+          <label for="output-element">outputElement</label>
+        </div>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input console-enable" type="checkbox" role="switch" id="console-enable" checked>
+          <label class="form-check-label" for="console-enable">consoleEnable</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" disabled value=".notion-hq-output--formatted" class="form-control" id="console-element" placeholder="consoleElement">
+          <label for="console-element">consoleElement</label>
+        </div>
         <div class="form-floating">
-          <textarea id="notion-hq-input--input" class="form-control notion-hq-input--input" placeholder="input">
+          <textarea disabled id="notion-hq-input--input" class="form-control notion-hq-input--input" placeholder="input">
 {
   "function": "databasesQuery",
   "data": {
@@ -115,8 +156,8 @@
           </textarea>
           <label for="notion-hq-input--input">notion-hq-input--input</label>
         </div>
-        <button class="notion-hq-trigger--btn btn btn-primary" type="button" type="submit">Go</button>
-        <button class="notion-hq-reset--btn btn btn-primary" type="button" type="submit">Reset</button>
+        <button class="notion-hq-trigger--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
+        <button class="notion-hq-reset--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
       </form>
     </p>
     <h2>Output</h2>
@@ -153,10 +194,40 @@
           "pagination": {
           }
         }
-        //comment is good
         $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
         window.requestInput = $('.notion-hq-input--input').val()
         notionHqQuery(window.requestInput)
+      })
+      $('.entry-max-number').on("change",function() {
+        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        $('.entry-max-number-number').html($(this).val())
+        requestInput.data.entryMaxNumber = $(this).val()
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
+      })
+      $('.entry-category-select').on("change",function() {
+        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        requestInput.data.entryCategory = $(this).val()
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
+      })
+      $('.entry-archived-include').on("change",function() {
+        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        requestInput.data.entryArchivedInclude = $(this).is(':checked')
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
+      })
+      $('.btn-check').on("change",function() {
+        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        requestInput.data.entryDisplay = $('.btn-check:checked').val()
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
+      })
+      $('.console-enable').on("change",function() {
+        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        requestInput.output.console.enable = $(this).is(':checked')
+        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-hq-input--input').val()
       })
     })
     $('.notion-hq-trigger--btn').on('click', function() {
@@ -168,13 +239,13 @@
         {
           type: 'POST',
           method: 'POST',
-          url: 'http://127.0.0.1:8787'/*'https://data.infiniteways.workers.dev'*/,
+          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
           dataType:'json',//data is sent as json to the server, but it reach there as object
           contentType:'application/x-www-form-urlencoded; charset=UTF-8',//default data sending and recieving MIME type although data is sent as json from the worker
           data: requestInput,//data sent from the input as a json string no need for stringify it
           beforeSend: function() {
               var requestInput = JSON.parse(window.requestInput)
-              $('.notion-hq-input--inputm, .notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',true)
+              $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',true)
               $(requestInput.output.element).html(
                 `
                   <div class="d-flex justify-content-center">
@@ -273,10 +344,14 @@
                 //const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                 //return array.filter((_, index) => (index + 1) % n === 0);
                 //const filteredArray = filterNthElements(originalArray, 3);
-                var pageTrain = ''//train section
+                //train section
+                var pageTrain = `
+                  <div class="btn-group ms-2 me-2 pagination-train" role="group" aria-label="page train">
+                `
                 for(let i = 0; i < number_of_pages; i++) {
-                  pageTrain += `<button data-start-cursor="${start_cursors[i]}" data-index="${i}" class="btn mx-1 btn-outline-primary page-train--button">${i+1}</button>`
+                  pageTrain += `<button data-start-cursor="${start_cursors[i]}" data-index="${i}" class="btn btn-primary page-train--button">${i+1}</button>`
                 }
+                pageTrain += '</div>'
                 //a focus tweak
                 setTimeout(function(){$('.page-train--button[data-index="'+(pageNow-1)+'"]').addClass('active')},1000)
                 //page train button trigger
@@ -316,15 +391,14 @@
                   nextIndex = indexNow - _page_size
                   var prev_cursor = _full_list[nextIndex]
                   _outputData += `
-                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous">Previous</button>
+                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous"><i class="bi-arrow-left-circle"></i></button>
                   `
                 }
-                _outputData += `
-                    <div class="pagination--train">${pageTrain}</div>
-                `
+                _outputData += pageTrain
+                
                 if(_pagination.has_more) {
                   _outputData += `
-                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next">Next</button>
+                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next"><i class="bi-arrow-right-circle"></i></button>
                   `
                 }
                 _outputData += `
@@ -360,7 +434,7 @@
             console.log('notionHqQuery() error')
           },
           complete: function() {
-            $('.notion-hq-input--inputm, .notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',false)
+            $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',false)
             console.log('notionHqQuery() complete')
           },
         }
