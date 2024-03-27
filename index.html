@@ -153,6 +153,7 @@
           "pagination": {
           }
         }
+        //comment
         $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
         window.requestInput = $('.notion-hq-input--input').val()
         notionHqQuery(window.requestInput)
@@ -167,7 +168,7 @@
         {
           type: 'POST',
           method: 'POST',
-          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
+          url: 'http://127.0.0.1:8787'/*'https://data.infiniteways.workers.dev'*/,
           dataType:'json',//data is sent as json to the server, but it reach there as object
           contentType:'application/x-www-form-urlencoded; charset=UTF-8',//default data sending and recieving MIME type although data is sent as json from the worker
           data: requestInput,//data sent from the input as a json string no need for stringify it
