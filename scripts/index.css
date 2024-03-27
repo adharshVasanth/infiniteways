@@ -1,0 +1,28 @@
+body {
+  padding: 10px;
+}
+form {
+  margin-block-end: 0px;
+}
+.notion-hq-output, .notion-hq-input {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border: 1px #e2e3e5 solid;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.notion-hq-output--formatted{
+  background-color: #161616;
+  display: block;
+  padding: 20px;
+  border: 1px #e2e3e5 solid;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  white-space: pre-wrap; /* css-3 */
+}
+#notion-hq-input--input {
+  height: 400px;
+}

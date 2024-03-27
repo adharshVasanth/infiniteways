@@ -7,54 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/css/sortable-theme-minimal.min.css">
-    <style>
-      body {
-        padding: 10px;
-      }
-      .notion-hq-output, .notion-hq-input {
-        background-color: #f2f2f2;
-        padding: 20px;
-        border: 1px #e2e3e5 solid;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      }
-      .notion-hq-output--formatted{
-        background-color: #161616;
-        display: block;
-        padding: 20px;
-        border: 1px #e2e3e5 solid;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
-        white-space: -pre-wrap; /* Opera 4-6 */
-        white-space: -o-pre-wrap; /* Opera 7 */
-        white-space: pre-wrap; /* css-3 */
-      }
-      #notion-hq-input--input {
-        height: 400px;
-      }
-      .databases-query-entry {
-        width: 250px;
-        margin:5px;
-        border: 1px #e2e3e5 solid;
-        background-color: #f7f7f7;
-        border-radius: 5px;
-      }
-      .database-query-entry--image-container {
-        width: auto;
-        height: 250px;
-      }
-      .database-query-entry--image {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-      }
-      .databases-query-entry--author-avatar {
-        display: inline-block;
-        border-radius: 50%;
-        height:30px;
-      }
-    </style>
+    <link rel="stylesheet" href="scripts/index.css">
   </head>
   <body>
     <h1>
@@ -67,11 +20,10 @@
       The wrangler plugin helps to do the work of the worker on a local server. Nevertheless it should be deployed to the worker.&nbsp;
     </p>
     <div class="container" style="max-width:100%">
-      <div class="row">
+      <div class="row my-3">
         <div class="col-md-4">
-          <form class="notion-hq-input mb-3" onSubmit="return false">
-            <h2>Input</h2>
-            <br/>
+          <form class="notion-hq-input" onSubmit="return false">
+            <span class="d-block mb-3 h4">Input</span>
             <div class="form-floating mb-3">
               <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control" id="database-id" placeholder="databaseId">
               <label for="database-id">databaseId</label>
@@ -112,7 +64,7 @@
               <input type="text" disabled value=".notion-hq-output--formatted" class="form-control" id="console-element" placeholder="consoleElement">
               <label for="console-element">consoleElement</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating mb-3">
               <textarea readonly id="notion-hq-input--input" class="form-control form-control-plaintext notion-hq-input--input" placeholder="input">
     {
       "function": "databasesQuery",
@@ -136,13 +88,12 @@
               </textarea>
               <label for="notion-hq-input--input">Data sent</label>
             </div>
-            <br/>
             <button class="notion-hq-trigger--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
             <button class="notion-hq-reset--btn btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
           </form>
         </div>
         <div class="col-md-8">
-          <div class="notion-hq-output mb-3"></div>
+          <div class="notion-hq-output"></div>
         </div>
       </div>
       <div class="row">
@@ -180,324 +131,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function() {
-      window.requestInput = $('.notion-hq-input--input').val()//setting input value string as a global variable
-      notionHqQuery(window.requestInput)//calling function passing the variable into it
-      $('.notion-hq-reset--btn').click(function(){
-        var requestInput = {
-          "function": "databasesQuery",
-          "data": {
-            "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
-            "entryCategory": "all",
-            "entryArchivedInclude": true,
-            "entryMaxNumber": 5,
-            "entryDisplay": "grid"
-          },
-          "output": {
-            "element": ".notion-hq-output",
-            "console": {
-              "enable": true,
-              "element": ".notion-hq-output--formatted"
-            }
-          },
-          "pagination": {
-          }
-        }
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-        notionHqQuery(window.requestInput)
-      })
-      $('.entry-max-number').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
-        $('.entry-max-number-number').html($(this).val())
-        requestInput.data.entryMaxNumber = JSON.parse($(this).val())
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-      })
-      $('.entry-category-select').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
-        requestInput.data.entryCategory = $(this).val()
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-      })
-      $('.entry-archived-include').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
-        requestInput.data.entryArchivedInclude = $(this).is(':checked')
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-      })
-      $('.btn-check').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
-        requestInput.data.entryDisplay = $('.btn-check:checked').val()
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-      })
-      $('.console-enable').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
-        requestInput.output.console.enable = $(this).is(':checked')
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
-      })
-    })
-    $('.notion-hq-trigger--btn').on('click', function() {
-      window.requestInput = $('.notion-hq-input--input').val()//setting input value string as a global variable
-      notionHqQuery(window.requestInput)//calling function passing the variable into it
-    })
-    //notionHqQuerys
-    function notionHqQuery(requestInput) {
-      var ajaxFunction =  $.ajax(
-        {
-          type: 'POST',
-          method: 'POST',
-          url: /*'http://127.0.0.1:8787'*/'https://data.infiniteways.workers.dev',
-          dataType:'json',//data is sent as json to the server, but it reach there as object
-          contentType:'application/x-www-form-urlencoded; charset=UTF-8',//default data sending and recieving MIME type although data is sent as json from the worker
-          data: requestInput,//data sent from the input as a json string no need for stringify it
-          beforeSend: function() {
-              var requestInput = JSON.parse(window.requestInput)
-              $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',true)
-              $(requestInput.output.element).html(
-                `
-                  <div class="d-flex justify-content-center">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
-                `
-              )
-              $(requestInput.output.console.element).html(
-                `
-                  <div class="d-flex justify-content-center">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
-                `
-              )
-              $(document).off("click",'.pagination-button--previous')
-              $(document).off("click",'.pagination-button--next')
-              $(document).off("click",'.page-train--button')
-              console.log(`notionHqQuery(requestInput) start`)
-
-          },
-          success: function(xhr, status, result) {//recieved as object but sent as json from worker
-            //function recieved
-            var _function = xhr.responseOutput.function
-            if(_function == 'databasesQuery') {
-              //response obtained as xhr
-              var _entry_category = xhr.responseOutput.data.entryCategory
-              var _entry_archived_include = xhr.responseOutput.data.entryArchivedInclude
-              var _entry_display = xhr.responseOutput.data.entryDisplay
-              var _response_data = xhr.responseOutput.data.responseData
-              //pagination section
-              var _pagination = xhr.responseOutput.pagination
-              var _full_list = _pagination.full_list
-              var _current_list = _pagination.current_list
-              var _page_size = _pagination.page_size
-              //output data defined, added more elements sequentially
-              var _outputData = `
-                <h2>found ${_full_list.length} results in "${_entry_category}"</h2><br/>
-              `
-              if(!_entry_archived_include) {
-                _outputData += `excluding archived<br/>`
-              }
-              //creating display loops
-              if(_entry_display == 'grid') {
-                _outputData += `<div class="row">`
-                for(let i = 0; i < _response_data.length; i++) {
-                  if(_response_data[i].properties.Archived.checkbox){
-                    var archiveText = '<span class="badge bg-secondary">Archived</span>'
-                  }else{
-                    var archiveText = ''
-                  }
-                  _outputData += `
-                    <div class="col-lg-5 mb-2 me-2">
-                      <div class="card shadow-lg" style="overflow:hidden">
-                        <div class="card-img-c" style="height:150px;overflow:hidden;">
-                            <img src="${_response_data[i].cover.file.url}" class="card-img-top img-fluid position-relative top-50 start-50 translate-middle" alt="page image"/>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</h6>
-                            <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${_response_data[i].created_time}</code></p>
-                            <a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a>
-                        </div>
-                        <div class="card-footer">
-                            <code class="card-subtitle mb-2 text-muted">${_response_data[i].id}</code>
-                        </div>
-                      </div>
-                    </div>
-
-                  `
-                }
-                _outputData += `</div>`
-              }else {
-                _outputData += `
-                  <table class="table table-borderless table-hover post-list-table sortable-theme-minimal P-3" data-sortable>
-                    <thead>
-                        <tr>
-                            <th class="d-none" scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Archived</th>
-                            <th scope="col">Date created</th>
-                            <th scope="col" class="d-none">ID</th>
-                            <th scope="col">Link</th>
-                        </tr>
-                    </thead>
-                `
-                for(let i = 0; i < _response_data.length; i++) {
-                  if(_response_data[i].properties.Archived.checkbox){
-                    var archiveText = '<span class="badge bg-secondary">Archived</span>'
-                  }else{
-                    var archiveText = ''
-                  }
-                  _outputData += `
-                    <tr data-id="${_response_data[i].id}">
-                      <th class="d-none" data-sortable="false" scope="row">${(i+1)}</th>
-                      <td><h6>${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}</h6></td>
-                      <td><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</td>
-                      <td><span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span></td>
-                      <td>${archiveText}</td>
-                      <td data-value="${_response_data[i].created_time}">${_response_data[i].created_time}</span></td>
-                      <td class="d-none"><pre>${_response_data[i].id}</pre></td>
-                      <td><a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a></td>
-                    </tr>
-                  `
-                }
-                _outputData += `
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                        <th data-sortable="false" colspan="8" class="text-center">${_full_list.length} results</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                `
-                /*async function returnBodySort(data) {//sort initialize and tooltip initialize
-                    try {
-                        const res = await returnBodyFn(data)
-                        Sortable.init()
-                    } catch(err) {
-                        console.log(err);
-                    }
-                }
-                returnBodySort(data)*/
-              }
-              //conditions
-              if(_full_list.length > _current_list.length) {
-                var indexNow = _full_list.indexOf(_current_list[0])//finding the index of first visible element
-                var number_of_pages = Math.ceil(_full_list.length/_page_size)//approx number of pages
-                var indexPerc = indexNow/_full_list.length//approx percentage covered
-                var start_cursors = filterNthElements(_full_list,_page_size)//an array of all the index entries
-                var pageNow = Math.ceil(indexPerc*number_of_pages)//current page estimated
-                if (pageNow == 0) {
-                  pageNow = 1
-                }
-                function filterNthElements(array, n) {
-                  return array.filter((_, index) => (index) % n === 0);
-                }
-                // Example usage:
-                //const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-                //return array.filter((_, index) => (index + 1) % n === 0);
-                //const filteredArray = filterNthElements(originalArray, 3);
-                //train section
-                var pageTrain = `
-                  <div class="btn-group ms-2 me-2 pagination-train" role="group" aria-label="page train">
-                `
-                for(let i = 0; i < number_of_pages; i++) {
-                  pageTrain += `<button data-start-cursor="${start_cursors[i]}" data-index="${i}" class="btn btn-primary page-train--button">${i+1}</button>`
-                }
-                pageTrain += '</div>'
-                _outputData += `
-                  <div class="pagination py-2">
-                `
-                if(indexNow != 0) {
-                  nextIndex = indexNow - _page_size
-                  var prev_cursor = _full_list[nextIndex]
-                  _outputData += `
-                      <button data-prev="${prev_cursor}" class="btn btn-primary pagination-button--previous"><i class="bi-arrow-left-circle"></i></button>
-                  `
-                }
-                _outputData += pageTrain
-                
-                if(_pagination.has_more) {
-                  _outputData += `
-                      <button data-next="${_pagination.next_cursor}" class="btn btn-primary pagination-button--next"><i class="bi-arrow-right-circle"></i></button>
-                  `
-                }
-                _outputData += `
-                    <div class="p-2 pagination--indicator">page ${pageNow} / ${number_of_pages}</div>
-                `
-                _outputData += `
-                  </div>
-                `//a focus tweak
-                setTimeout(function(){$('.page-train--button[data-index="'+(pageNow-1)+'"]').addClass('active')},1000)
-                //page train button trigger
-                $(document).on("click",'.page-train--button', function() {
-                  var requestInput = JSON.parse(window.requestInput)
-                  requestInput.pagination.enable = true
-                  requestInput.pagination.start_cursor = $(this).attr('data-start-cursor')
-                  requestInput = JSON.stringify(requestInput,null,2)
-                  $('.notion-hq-input--input').val(requestInput)
-                  window.requestInput = requestInput
-                  notionHqQuery(window.requestInput)
-                })
-                //prev button trigger
-                $(document).on("click",'.pagination-button--previous', function() {
-                  var requestInput = JSON.parse(window.requestInput)
-                  requestInput.pagination.enable = true
-                  requestInput.pagination.start_cursor = $(this).attr('data-prev')
-                  requestInput = JSON.stringify(requestInput,null,2)
-                  $('.notion-hq-input--input').val(requestInput)
-                  window.requestInput = requestInput
-                  notionHqQuery(window.requestInput)
-                })
-                //next button trigger
-                $(document).on("click",'.pagination-button--next', function() {
-                  var requestInput = JSON.parse(window.requestInput)
-                  requestInput.pagination.enable = true
-                  requestInput.pagination.start_cursor = $(this).attr('data-next')
-                  requestInput = JSON.stringify(requestInput,null,2)
-                  $('.notion-hq-input--input').val(requestInput)
-                  window.requestInput = requestInput
-                  notionHqQuery(window.requestInput)
-                })
-              }
-            }//databasesQuery end
-            $(xhr.responseOutput.output.element).html(_outputData)
-            if(xhr.responseOutput.output.console.enable) {//enable console and diagnostics
-              var formatterConfig = {
-                hoverPreviewEnabled: false,
-                hoverPreviewArrayCount: 100,
-                hoverPreviewFieldCount: 5,
-                theme: 'dark',
-                animateOpen: true,
-                animateClose: true,
-                useToJSON: true
-              }
-              result.responseText = "truncated"
-              //console.log([{xhr}, {status}, {result}])
-              //const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
-              const formatter = new JSONFormatter({xhr},3,formatterConfig);
-              $(xhr.responseOutput.output.console.element).html(formatter.render())
-            }else{
-              $(xhr.responseOutput.output.console.element).html('')
-            }
-          },
-          error: function(xhr, status, error) {
-            console.log([{xhr}, {status}, {error}])
-            console.log('notionHqQuery() error')
-          },
-          complete: function() {
-            $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',false)
-            console.log('notionHqQuery() complete')
-          },
-        }
-      )
-      return ajaxFunction
-    }
-  </script>
+  <script src="scripts/index.js"></script>
 </html>
