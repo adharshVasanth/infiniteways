@@ -1,14 +1,14 @@
 $(document).ready(function() {
     //calling notionHqQuery on document ready
-    window.requestInput = $('.notion-hq-input--input').val()
+    window.requestInput = $('.notion-databases-input--input').val()
     notionHqQuery(window.requestInput)
-    //.notion-hq-trigger--btn click
-    $('.notion-hq-trigger--btn').on('click', function() {
-        window.requestInput = $('.notion-hq-input--input').val()
+    //.notion-databases-trigger--btn click
+    $('.notion-databases-trigger--btn').on('click', function() {
+        window.requestInput = $('.notion-databases-input--input').val()
         notionHqQuery(window.requestInput)
     })
-    //.notion-hq-reset--btn click
-    $('.notion-hq-reset--btn').click(function(){
+    //.notion-databases-reset--btn click
+    $('.notion-databases-reset--btn').click(function(){
         //default sent data
         var requestInput = JSON.stringify(
             {
@@ -21,10 +21,10 @@ $(document).ready(function() {
                     "entryDisplay": "grid"
                 },
                 "output": {
-                    "element": ".notion-hq-output",
+                    "element": ".notion-databases-output",
                     "console": {
                         "enable": true,
-                        "element": ".notion-hq-output--formatted"
+                        "element": ".notion-databases-output--formatted"
                     }
                 },
                 "pagination": {
@@ -33,46 +33,65 @@ $(document).ready(function() {
             null,
             2
         )
-        $('.notion-hq-input--input').val(requestInput)
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(requestInput)
+        window.requestInput = $('.notion-databases-input--input').val()
         notionHqQuery(window.requestInput)
     })
-    //on change functions of form elements and update the .notion-hq-input--input value
+    //notion-pages-trigger--btn click
+    $('.notion-pages-trigger--btn').on('click', function(){
+        var requestInput = {
+            function: 'pagesQuery',
+            data: {
+                pageId: $('#page-id').val()
+            },
+            output: {
+                element: $('#pages-output-element').val(),
+                console: {
+                    enable: true,
+                    element: '.notion-hq-output--formatted'
+                }
+            }
+        }
+        requestInput = JSON.stringify(requestInput,null,2)
+        window.requestInput = requestInput
+        notionHqQuery(requestInput)
+    })
+    //on change functions of form elements and update the .notion-databases-input--input value
     //.entry-max-number change
     $('.entry-max-number').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        var requestInput = JSON.parse($('.notion-databases-input--input').val())
         $('.entry-max-number-number').html($(this).val())
         requestInput.data.entryMaxNumber = JSON.parse($(this).val())
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-databases-input--input').val()
     })
     //.entry-category-select change
     $('.entry-category-select').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.data.entryCategory = $(this).val()
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-databases-input--input').val()
     })
     //.entry-archived-include change
     $('.entry-archived-include').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.data.entryArchivedInclude = $(this).is(':checked')
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-databases-input--input').val()
     })
     //.btn-check aka display type change
     $('.btn-check').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.data.entryDisplay = $('.btn-check:checked').val()
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-databases-input--input').val()
     })
     //.console-enable change
     $('.console-enable').on("change",function() {
-        var requestInput = JSON.parse($('.notion-hq-input--input').val())
+        var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.output.console.enable = $(this).is(':checked')
-        $('.notion-hq-input--input').val(JSON.stringify(requestInput,null,2))
-        window.requestInput = $('.notion-hq-input--input').val()
+        $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
+        window.requestInput = $('.notion-databases-input--input').val()
     })
 })
 //basic functions
@@ -87,17 +106,26 @@ function spinner(el) {
         `
     )
 }
-function filterNthElements(array, n) {
-    return array.filter((_, index) => (index) % n === 0);
-}
 /*
 Example usage:
 const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 return array.filter((_, index) => (index + 1) % n === 0);
 const filteredArray = filterNthElements(originalArray, 3);
 */
+function filterNthElements(array, n) {
+    return array.filter((_, index) => (index) % n === 0);
+}
+function objectifyForm(formArray) {
+    //serialize data function
+    var returnArray = {};
+    for (var i = 0; i < formArray.length; i++){
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
+    }
+    return returnArray;
+}
 /*
-notionHqQuery
+notionHqQuery(requestInput)
+------------------------
 url: shift between local and remote workers, local managed by wrangler and remotely stored in cloudflare
     local   =>  'http://127.0.0.1:8787'
     remote  =>  'https://data.infiniteways.workers.dev'
@@ -120,18 +148,25 @@ function notionHqQuery(requestInput) {
                 var requestInput = JSON.parse(window.requestInput)
                 //identifying function and making necessary beforeSend changes
                 //databasesQuery
+                $('.notion-databases-trigger--btn, .notion-databases-reset--btn, .notion-pages-trigger--btn').attr('disabled',true)
                 if(requestInput.function == 'databasesQuery') {
-                    $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',true)
                     spinner($(requestInput.output.element))
                     spinner($(requestInput.output.console.element))
+                    $(document).off('click','.page-load-button')
                     $(document).off("click",'.pagination-button--previous')
                     $(document).off("click",'.pagination-button--next')
                     $(document).off("click",'.page-train--button')
-                    console.log(`notionHqQuery(requestInput) start`)
+                    console.log(`notionHqQuery() databasesQuery start`)
+                }
+                if(requestInput.function == 'pagesQuery') {
+                    spinner($(requestInput.output.element))
+                    spinner($(requestInput.output.console.element))
+                    console.log(`notionHqQuery() pagesQuery start`)
                 }
 
             },
             success: function(xhr, status, result) {//SUCCESS
+                //extracting the request output
                 var responseOutput = xhr.responseOutput
                 //identifying function and making necessary success changes
                 //databasesQuery
@@ -172,7 +207,7 @@ function notionHqQuery(requestInput) {
                                             <h5 class="card-title mb-3">${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
                                             <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</h6>
                                             <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${_response_data[i].created_time}</code></p>
-                                            <a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a>
+                                            <a data-id="${_response_data[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a>
                                         </div>
                                         <div class="card-footer">
                                             <code class="card-subtitle mb-2 text-muted">${_response_data[i].id}</code>
@@ -214,7 +249,7 @@ function notionHqQuery(requestInput) {
                                     <td>${archiveText}</td>
                                     <td data-value="${_response_data[i].created_time}">${_response_data[i].created_time}</span></td>
                                     <td class="d-none"><pre>${_response_data[i].id}</pre></td>
-                                    <td><a class="btn btn-outline-primary btn-sm" target="new" href="${_response_data[i].public_url}">Open</a></td>
+                                    <td><a data-id="${_response_data[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a></td>
                                 </tr>
                             `
                         }
@@ -298,7 +333,7 @@ function notionHqQuery(requestInput) {
                             requestInput.pagination.enable = true
                             requestInput.pagination.start_cursor = $(this).attr('data-start-cursor')
                             requestInput = JSON.stringify(requestInput,null,2)
-                            $('.notion-hq-input--input').val(requestInput)
+                            $('.notion-databases-input--input').val(requestInput)
                             window.requestInput = requestInput
                             notionHqQuery(window.requestInput)
                         })
@@ -308,7 +343,7 @@ function notionHqQuery(requestInput) {
                             requestInput.pagination.enable = true
                             requestInput.pagination.start_cursor = $(this).attr('data-prev')
                             requestInput = JSON.stringify(requestInput,null,2)
-                            $('.notion-hq-input--input').val(requestInput)
+                            $('.notion-databases-input--input').val(requestInput)
                             window.requestInput = requestInput
                             notionHqQuery(window.requestInput)
                         })
@@ -318,12 +353,76 @@ function notionHqQuery(requestInput) {
                             requestInput.pagination.enable = true
                             requestInput.pagination.start_cursor = $(this).attr('data-next')
                             requestInput = JSON.stringify(requestInput,null,2)
-                            $('.notion-hq-input--input').val(requestInput)
+                            $('.notion-databases-input--input').val(requestInput)
                             window.requestInput = requestInput
                             notionHqQuery(window.requestInput)
                         })
                     }
+                    $(document).on('click','.page-load-button',function() {
+                        var requestInput = {
+                            function: 'pagesQuery',
+                            data: {
+                                pageId: $(this).attr('data-id')
+                            },
+                            output: {
+                                element: $('#pages-output-element').val(),
+                                console: {
+                                    enable: true,
+                                    element: '.notion-hq-output--formatted'
+                                }
+                            }
+                        }
+                        requestInput = JSON.stringify(requestInput,null,2)
+                        window.requestInput = requestInput
+                        notionHqQuery(requestInput)
+                        $('#page-id').val($(this).attr('data-id'))
+                    })
                 }//databasesQuery end
+                //pagesQuery
+                if(responseOutput.function == 'pagesQuery'){
+                    var responseRawData = responseOutput.data.responseRawData
+                    var results = responseRawData[1].results//the array of page's block children with details
+                    var data = ''//create an empty var to extract and make an array of only necessary aspects of the child and then make it visualizable
+                    for(let i = 0; i < results.length; i++){
+                        var type = responseRawData[1].results[i].type
+                        if(type == 'paragraph') {
+                            var txtLength = results[i].paragraph.rich_text.length
+                            if(txtLength!=0) {
+                                data +=  results[i].paragraph.rich_text[0].plain_text+'<br/>'
+                            }else {
+                                data +=  '<br/>'//for blank spaces
+                            }
+                        }
+                        if(type == 'image') {
+                            data += `
+                                <img class="page-img p-1 border border-primary rounded my-2" style="--bs-border-opacity: .2;" src="${results[i].image.file.url}"/>
+                            `
+                        }
+                    }
+                    var _outputDataChildren = data
+                    var _outputData = `
+                    <div class="page">
+                        <div class="page-header">
+                            <div class="page-header--breadcrumb mb-3">
+                                <pre>${responseRawData[0].parent.database_id} > ${responseRawData[0].id}</pre>
+                            </div>
+                            <div class="page-header--details">
+                            <div class="h4 mb-3">
+                                ${responseRawData[0].icon.emoji}   ${responseRawData[0].properties.Name.title[0].plain_text}
+                            </div>
+                            <div class="mb-3 h5">
+                                ${responseRawData[0].created_time} | 
+                                <img src="${responseRawData[0].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${responseRawData[0].properties.Author.people[0].name} | 
+                                <span class="badge bg-primary">${responseRawData[0].properties.Category.select.name}</span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="page-body">
+                            ${_outputDataChildren}
+                        </div>    
+                    </div>
+                    `
+                }//pagesQuery end
                 //outputing the data
                 $(responseOutput.output.element).html(_outputData)
                 //on page console
@@ -351,7 +450,7 @@ function notionHqQuery(requestInput) {
                 console.log('notionHqQuery() error')
             },
             complete: function() {//COMPLETE
-                $('.notion-hq-trigger--btn, .notion-hq-reset--btn').attr('disabled',false)
+                $('.notion-databases-trigger--btn, .notion-databases-reset--btn, .notion-pages-trigger--btn').attr('disabled',false)
                 console.log('notionHqQuery() complete')
             },
         }

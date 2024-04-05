@@ -1,10 +1,10 @@
 body {
-  padding: 10px;
+  padding: 50px 10px;
 }
 form {
   margin-block-end: 0px;
 }
-.notion-hq-output, .notion-hq-input {
+.notion-databases-output, .notion-databases-input, .notion-pages-output, .notion-pages-input {
   background-color: #f2f2f2;
   padding: 20px;
   border: 1px #e2e3e5 solid;
@@ -23,6 +23,6 @@ form {
   white-space: -o-pre-wrap; /* Opera 7 */
   white-space: pre-wrap; /* css-3 */
 }
-#notion-hq-input--input {
+#notion-databases-input--input {
   height: 400px;
 }
