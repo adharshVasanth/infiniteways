@@ -1,8 +1,29 @@
 body {
-  padding: 50px 10px;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Noto Sans Mono', monospace;
 }
 form {
   margin-block-end: 0px;
+}
+.navigation {
+  background: #f2f2f2;
+  border: 1px #e2e3e5 solid;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.footer {
+  background: #f2f2f2;
+  border: 1px #e2e3e5 solid;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.header {
+  width: 100%;
+  height: 200px;
+}
+.header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .notion-databases-output, .notion-databases-input, .notion-pages-output, .notion-pages-input {
   background-color: #f2f2f2;
@@ -10,9 +31,10 @@ form {
   border: 1px #e2e3e5 solid;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: auto;
 }
 .notion-hq-output--formatted{
-  background-color: #161616;
+  background-color: #1f1f1f;
   display: block;
   padding: 20px;
   border: 1px #e2e3e5 solid;

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>
+            infiniteWays: A new perspective
+        </title>
+        <meta charset="utf-8" />
+        <meta name="description" content="This is the homepage of the blog for infiniteWays. This is a single page application with only basic functionalities" />
+        <mata name="author" content="adharshVasanth" />
+        <meta name="keywords" content="infiniteWays, free-life" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:description" content="This is the homepage of the blog for infiniteWays. This is a single page application with only basic functionalities" />
+        <meta property="og:image" content="../assets/logos/inways_logo_exp.PNG" />
+        <meta property="og:title" content="infiniteWays: A new perspective" />
+        <link rel="icon" href="../assets/images/favicon/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="../assets/images/favicon/apple-touch-icon.png" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/css/sortable-theme-minimal.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap' type='text/css'>
+        <link rel="stylesheet" href="../scripts/index.css" />
+        <script src="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="../scripts/index.js" defer></script>
+        <script>
+            $(document).ready(function() {
+                //calling notionHqQuery on document ready
+                var requestInput = `{
+                    "function": "databasesQuery",
+                    "data": {
+                        "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+                        "entryCategory": "all",
+                        "entryArchivedInclude": true,
+                        "entryMaxNumber": 5,
+                        "entryDisplay": "table"
+                    },
+                    "output": {
+                        "element": ".notion-databases-output",
+                        "console": {
+                        "enable": false,
+                        "element": ".notion-hq-output--formatted"
+                        }
+                    },
+                    "pagination": {
+                    }
+                }`
+                notionHqQuery(requestInput)
+            })
+        </script>
+    </head>
+    <body>
+        <div class="navigation px-5 py-4">
+            <div class="container" style="max-width:100%;">
+                <div class="row">
+                    <div class="col text-center">
+                        <img style="height: 40px;" src="../assets/images/logos/inways_logo_exp.PNG"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="header">
+                <img src="../assets/images/backgrounds/austin-neill-1t0yY9lSpyE-unsplash.jpg"/>
+            </div>
+            <div class="content px-5">
+                <div class="content-title notion-hq-breadcrumbs h5 py-4">
+                    database/
+                </div>
+                <div class="content-content notion-hq-output notion-databases-output mb-4" style="display:none;"></div>
+                <div class="content-content notion-hq-output notion-pages-output mb-4" style="display:none;"></div>
+                <div class="content-content notion-hq-output--formatted mb-4" style="display:none;"></div>
+                <input class="d-none" id="pages-output-element" value=".notion-pages-output" />
+            </div>
+            <div class="footer px-5 py-4 text-end">
+                <h6>Powered by</h6>
+                <img style="height:20px" src="../assets/images/logos/Bootstrap_logo.svg" />&nbsp;
+                <img style="height:20px" src="../assets/images/logos/Google-Fonts-Logo.png" />&nbsp;
+                <img style="height:20px" src="../assets/images/logos/cloudflare-workers-logo.svg" />&nbsp;&nbsp;
+                <img style="height:20px" src="../assets/images/logos/jquery_logo.gif" />&nbsp;&nbsp;
+                <img style="height:20px" src="../assets/images/logos/Notion-logo.svg" />&nbsp;&nbsp;
+                <img style="height:20px" src="../assets/images/logos/a267aac-notion-devs-logo.svg" />
+            </div>
+        </div>
+    </body>
+</html>
