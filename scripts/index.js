@@ -1,11 +1,12 @@
 $(document).ready(function() {
-    //.notion-databases-trigger--btn click
-    $('.notion-databases-trigger--btn').on('click', function() {
+    //notion forms trigger buttons event handlers
+    //.notion-databases-trigger--trigger click
+    $('.notion-databases-trigger--trigger').on('click', function() {
         var requestInput = $('.notion-databases-input--input').val()
         notionHqQuery(requestInput)
     })
-    //.notion-databases-reset--btn click
-    $('.notion-databases-reset--btn').click(function(){
+    //.notion-databases-trigger--reset click
+    $('.notion-databases-trigger--reset').click(function(){
         //default sent data
         var requestInput = JSON.stringify(
             {
@@ -32,52 +33,52 @@ $(document).ready(function() {
         )
         notionHqQuery(requestInput)
     })
-    //notion-pages-trigger--btn click
-    $('.notion-pages-trigger--btn').on('click', function(){
+    //.notion-pages-trigger--trigger click
+    $('.notion-pages-trigger--trigger').on('click', function(){
         var requestInput = {
             function: 'pagesQuery',
             data: {
-                pageId: $('#page-id').val()
+                pageId: $('.notion-pages-input--page-id').val()
             },
             output: {
-                element: $('#pages-output-element').val(),
+                element: $('.notion-pages-input--output-element').val(),
                 console: {
-                    enable: true,
-                    element: '.notion-hq-output--formatted'
+                    enable: $('.notion-pages-input--console-enable').is(':checked'),
+                    element: '.notion-hq-output--formatted'//not planned to change
                 }
             }
         }
         requestInput = JSON.stringify(requestInput,null,2)
         notionHqQuery(requestInput)
     })
-    //on change functions of form elements and update the .notion-databases-input--input value
-    //.entry-max-number change
-    $('.entry-max-number').on("change",function() {
+    //on change event handlers of form elements and update the .notion-databases-input--input value
+    //.notion-databases-input--entry-max-number change
+    $('.notion-databases-input--entry-max-number').on("change",function() {
         var requestInput = JSON.parse($('.notion-databases-input--input').val())
-        $('.entry-max-number-number').html($(this).val())
+        $('.notion-databases-input--entry-max-number-number').html($(this).val())
         requestInput.data.entryMaxNumber = JSON.parse($(this).val())
         $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
     })
-    //.entry-category-select change
-    $('.entry-category-select').on("change",function() {
+    //.notion-databases-input--entry-category-select change
+    $('.notion-databases-input--entry-category-select').on("change",function() {
         var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.data.entryCategory = $(this).val()
         $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
     })
-    //.entry-archived-include change
-    $('.entry-archived-include').on("change",function() {
+    //.notion-databases-input--entry-archived-include change
+    $('.notion-databases-input--entry-archived-include').on("change",function() {
         var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.data.entryArchivedInclude = $(this).is(':checked')
         $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
     })
-    //.btn-check aka display type change
-    $('.btn-check').on("change",function() {
+    //.notion-databases-input--entry-display change
+    $('.notion-databases-input--entry-display').on("change",function() {
         var requestInput = JSON.parse($('.notion-databases-input--input').val())
-        requestInput.data.entryDisplay = $('.btn-check:checked').val()
+        requestInput.data.entryDisplay = $('.notion-databases-input--entry-display:checked').val()
         $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
     })
-    //.console-enable change
-    $('.console-enable').on("change",function() {
+    //.notion-databases-input--console-enable change
+    $('.notion-databases-input--console-enable').on("change",function() {
         var requestInput = JSON.parse($('.notion-databases-input--input').val())
         requestInput.output.console.enable = $(this).is(':checked')
         $('.notion-databases-input--input').val(JSON.stringify(requestInput,null,2))
@@ -109,6 +110,7 @@ function progress(el, fn) {
     }
 }
 /*
+filter an array at intervals
 Example usage:
 const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 return array.filter((_, index) => (index + 1) % n === 0);
@@ -117,6 +119,7 @@ const filteredArray = filterNthElements(originalArray, 3);
 function filterNthElements(array, n) {
     return array.filter((_, index) => (index) % n === 0);
 }
+//objectify form
 function objectifyForm(formArray) {
     //serialize data function
     var returnArray = {};
@@ -140,46 +143,54 @@ function notionHqQueryRequest(requestInput) {
     var ajaxPromise = new Promise(
         function(resolveA, reject){
             var ajaxFunction = $.ajax(
-                {
+                {   
+                    //BASIC SETTINGS
                     type: 'POST',
                     method: 'POST',
                     url: 'https://data.infiniteways.workers.dev',
                     data: requestInput,
-                    beforeSend: function(xhr, settings) {//BEFORE SEND
+                    //BEFORE SEND
+                    beforeSend: function(xhr, settings) {
                         //getting the requestInput as settings.data, where settings is the settings of this ajax object
                         var requestInput = JSON.parse(settings.data)
-                        //identifying function and making necessary beforeSend changes
-                        //databasesQuery
-                        $('.notion-databases-trigger--btn, .notion-databases-reset--btn, .notion-pages-trigger--btn').attr('disabled',true)
+                        $('.notion-databases-trigger--trigger, .notion-databases-trigger--reset, .notion-pages-trigger--trigger').attr('disabled',true)
+                        //manipulating necessary output elements with jquery animations
                         $('.notion-hq-output'+requestInput.output.element).slideDown()
                         $('.notion-hq-output').not(requestInput.output.element).slideUp()
-                        progress($(requestInput.output.element),'notionHqQuery')
                         if(requestInput.output.console.enable) {
                             $(requestInput.output.console.element).slideDown()
                             spinner($(requestInput.output.console.element))
                         }else {
                             $(requestInput.output.console.element).slideUp()
                         }
+                        //adding a progress bar to output element
+                        progress($(requestInput.output.element),'notionHqQuery')
+                        //identifying function and making necessary beforeSend changes
+                        //databasesQuery
                         if(requestInput.function == 'databasesQuery') {
-                            $(document).off('click','.page-load-button')
-                            $(document).off("click",'.pagination-button--previous')
-                            $(document).off("click",'.pagination-button--next')
-                            $(document).off("click",'.page-train--button')
+                            //resetting the event handlers of dynamically load contents
+                            $(document).off('click','.notion-databases-pagination--page-load-button')
+                            $(document).off("click",'.notion-databases-pagination--button-previous')
+                            $(document).off("click",'.notion-databases-pagination--button-next')
+                            $(document).off("click",'.notion-databases-pagination--page-train-button')
                             console.log(`notionHqQuery() databasesQuery start`)
                         }
+                        //pagesQuery
                         if(requestInput.function == 'pagesQuery') {
                             console.log(`notionHqQuery() pagesQuery start`)
                         }
 
                     },
-                    success: function(xhr, status, result) {//SUCCESS
-                        //resolve(xhr)
+                    //SUCCESS
+                    success: function(xhr, status, result) {
                         console.log('notionHqQuery() success')
                     },
-                    complete: function(xhr, status) {//COMPLETE
-                        $('.notion-databases-trigger--btn, .notion-databases-reset--btn, .notion-pages-trigger--btn').attr('disabled',false)
+                    //COMPLETE
+                    complete: function(xhr, status) {
+                        $('.notion-databases-trigger--trigger, .notion-databases-trigger--reset, .notion-pages-trigger--trigger').attr('disabled',false)
                         console.log('notionHqQuery() complete')
                     },
+                    //XHR specifically for progress
                     xhr: function () {
                         var xhr = new window.XMLHttpRequest();
                         var progressPromise = new Promise(function(resolveProgress, rejectProgress) {
@@ -187,11 +198,8 @@ function notionHqQueryRequest(requestInput) {
                             xhr.addEventListener("progress", function (evt) {
                                 if (evt.lengthComputable) {
                                     // Calculate the progress percentage
-                                    //xhr.responseJSON
-                                    //xhr.responseText
                                     var perc = (evt.loaded / evt.total) * 100;
                                 }
-                                //console.log(xhr.responseText)
                                 $('.notion-hq-query-progress-bar').animate(
                                     {
                                         'width': perc+'%',
@@ -199,16 +207,19 @@ function notionHqQueryRequest(requestInput) {
                                     1000,
                                     function() {
                                         console.log('load complete')
+                                        //xhr.responseJSON
+                                        //xhr.responseText
+                                        //resolve progress with response
                                         resolveProgress(xhr.responseText)
                                     }
                                 )
                             }, false);
                         })
-
                         // Resolve the main promise when progress animation completes
                         progressPromise.then(resolveA)
                         return xhr;
                     },
+                    //ERROR
                     error: function(xhr, status, error) {//ERROR
                         reject([{xhr}, {status}, {error}])
                         console.log('notionHqQuery() error')
@@ -231,54 +242,54 @@ function notionHqQuery(requestInput) {
             //databasesQuery
             if(responseOutput.function == 'databasesQuery') {
                 //extracting parameters to use in conditions
-                var _entry_category = responseOutput.data.entryCategory
-                var _entry_archived_include = responseOutput.data.entryArchivedInclude
-                var _entry_display = responseOutput.data.entryDisplay
-                var _response_data = responseOutput.data.responseData
+                var entryCategory = responseOutput.data.entryCategory
+                var entryArchivedInclude = responseOutput.data.entryArchivedInclude
+                var entryDisplay = responseOutput.data.entryDisplay
+                var responseData = responseOutput.data.responseData
                 //pagination parameters to use in conditions
-                var _pagination = responseOutput.pagination
-                var _full_list = _pagination.full_list
-                var _current_list = _pagination.current_list
-                var _page_size = _pagination.page_size
+                var pagination = responseOutput.pagination
+                var fullList = pagination.fullList
+                var currentList = pagination.currentList
+                var pageSize = pagination.pageSize
                 //output data defined, added more elements sequentially
-                var _outputData = `
-                    <span class="d-block mb-3 h4"><i class="bi bi-check2-circle"></i> found ${_full_list.length} results in "${_entry_category}"</span>
+                var outputData = `
+                    <span class="d-block mb-3 h4"><i class="bi bi-check2-circle"></i> found ${fullList.length} results in "${entryCategory}"</span>
                 `
-                if(!_entry_archived_include) {
-                    _outputData += `<span class="d-block mb-3 h5">excluding archived</span>`
+                if(!entryArchivedInclude) {
+                    outputData += `<span class="d-block mb-3 h5">excluding archived</span>`
                 }
                 //creating display condition & loops
-                if(_entry_display == 'grid') {//grid display
-                    _outputData += `<div class="row justify-content-center mb-3">`
-                    for(let i = 0; i < _response_data.length; i++) {
-                        if(_response_data[i].properties.Archived.checkbox){
+                if(entryDisplay == 'grid') {//grid display
+                    outputData += `<div class="row justify-content-center mb-3">`
+                    for(let i = 0; i < responseData.length; i++) {
+                        if(responseData[i].properties.Archived.checkbox){
                             var archiveText = '<span class="badge bg-secondary">Archived</span>'
                         }else{
                             var archiveText = ''
                         }
-                        _outputData += `
+                        outputData += `
                             <div class="col-lg-5 mb-2 me-2">
                                 <div class="card shadow-lg" style="overflow:hidden">
                                     <div class="card-img-c" style="height:150px;overflow:hidden;">
-                                            <img src="${_response_data[i].cover.file.url}" class="card-img-top img-fluid position-relative top-50 start-50 translate-middle" alt="page image"/>
+                                            <img src="${responseData[i].cover.file.url}" class="card-img-top img-fluid position-relative top-50 start-50 translate-middle" alt="page image"/>
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title mb-3">${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</h6>
-                                        <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${_response_data[i].created_time}</code></p>
-                                        <a data-id="${_response_data[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a>
+                                        <h5 class="card-title mb-3">${responseData[i].icon.emoji}&nbsp;${responseData[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${responseData[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${responseData[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${responseData[i].properties.Author.people[0].name}</h6>
+                                        <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${responseData[i].created_time}</code></p>
+                                        <a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a>
                                     </div>
                                     <div class="card-footer">
-                                        <code class="card-subtitle mb-2 text-muted">${_response_data[i].id}</code>
+                                        <code class="card-subtitle mb-2 text-muted">${responseData[i].id}</code>
                                     </div>
                                 </div>
                             </div>
 
                         `
                     }
-                    _outputData += `</div>`
+                    outputData += `</div>`
                 }else {//table display
-                    _outputData += `
+                    outputData += `
                         <table class="table border border-1 post-list-table sortable-theme-minimal" data-sortable>
                             <thead>
                                 <tr>
@@ -293,30 +304,30 @@ function notionHqQuery(requestInput) {
                                 </tr>
                             </thead>
                     `
-                    for(let i = 0; i < _response_data.length; i++) {
-                        if(_response_data[i].properties.Archived.checkbox){
+                    for(let i = 0; i < responseData.length; i++) {
+                        if(responseData[i].properties.Archived.checkbox){
                             var archiveText = '<span class="badge bg-secondary">Archived</span>'
                         }else{
                             var archiveText = ''
                         }
-                        _outputData += `
-                            <tr data-id="${_response_data[i].id}">
+                        outputData += `
+                            <tr data-id="${responseData[i].id}">
                                 <th class="d-none" data-sortable="false" scope="row">${(i+1)}</th>
-                                <td><h6>${_response_data[i].icon.emoji}&nbsp;${_response_data[i].properties.Name.title[0].plain_text}</h6></td>
-                                <td><img src="${_response_data[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${_response_data[i].properties.Author.people[0].name}</td>
-                                <td><span class="badge bg-secondary">${_response_data[i].properties.Category.select.name}</span></td>
+                                <td><h6>${responseData[i].icon.emoji}&nbsp;${responseData[i].properties.Name.title[0].plain_text}</h6></td>
+                                <td><img src="${responseData[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${responseData[i].properties.Author.people[0].name}</td>
+                                <td><span class="badge bg-secondary">${responseData[i].properties.Category.select.name}</span></td>
                                 <td>${archiveText}</td>
-                                <td data-value="${_response_data[i].created_time}">${_response_data[i].created_time}</span></td>
-                                <td class="d-none"><pre>${_response_data[i].id}</pre></td>
-                                <td><a data-id="${_response_data[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a></td>
+                                <td data-value="${responseData[i].created_time}">${responseData[i].created_time}</span></td>
+                                <td class="d-none"><pre>${responseData[i].id}</pre></td>
+                                <td><a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a></td>
                             </tr>
                         `
                     }
-                    _outputData += `
+                    outputData += `
                             </tbody>
                             <tfoot>
                                     <tr>
-                                    <th data-sortable="false" colspan="8" class="text-center">${_full_list.length} results</th>
+                                    <th data-sortable="false" colspan="8" class="text-center">${fullList.length} results</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -333,84 +344,97 @@ function notionHqQuery(requestInput) {
                     returnBodySort(data)*/
                 }
                 //pagination section
-                if(_full_list.length > _current_list.length) {
-                    //derivations
-                    var indexNow = _full_list.indexOf(_current_list[0])//finding the index of first visible element
-                    var number_of_pages = Math.ceil(_full_list.length/_page_size)//approx number of pages
-                    var indexPerc = indexNow/_full_list.length//approx percentage covered
-                    var start_cursors = filterNthElements(_full_list,_page_size)//an array of all the index entries
-                    var pageNow = Math.ceil(indexPerc*number_of_pages)//current page estimated
-                    if (pageNow == 0) {//multiplication by 0 corrected
-                        pageNow = 1
-                    }
-                    //adding pagination elements
-                    _outputData += `
-                        <nav aria-label="entry pagination">
-                            <ul class="pagination justify-content-md-center">
-                    `
-                    //adding previous button
-                    if(indexNow != 0) {
-                        nextIndex = indexNow - _page_size
-                        var prev_cursor = _full_list[nextIndex]
-                        _outputData += `
-                            <li class="page-item">
-                                <a href="javarscript:void(0)" aria-label="previous" data-prev="${prev_cursor}" class="page-link pagination-button--previous"><span aria-hidden="true">&laquo;</span></a>
-                            </li>
-                        `
-                    }
-                    //adding page train
-                    var _pageTrain = ''
-                    for(let i = 0; i < number_of_pages; i++) {
-                        _pageTrain += `
-                            <li class="page-item">
-                                <a href="javarscript:void(0)" data-start-cursor="${start_cursors[i]}" data-index="${i}" class="page-link page-train--button">${i+1}</a>
-                            </li>
-                        `
-                    }
-                    _outputData += _pageTrain
-                    //adding next button
-                    if(_pagination.has_more) {
-                        _outputData += `
-                            <li class="page-item">
-                                <a href="javarscript:void(0)" aria-label="next" data-next="${_pagination.next_cursor}" class="page-link pagination-button--next"><span aria-hidden="true">&raquo;</span></a>
-                            </li>
-                        `
-                    }
-                    _outputData += `
-                            </div>
-                        </nav>
-                    `
-                    //adding page indicator: hidden
-                    _outputData += `
-                        <div class="p-2 d-none pagination--indicator">page ${pageNow} / ${number_of_pages}</div>
-                    `
-                    //a focus tweak
-                    setTimeout(function(){$('.page-train--button[data-index="'+(pageNow-1)+'"]').addClass('active')},2000)
-                    //page train button trigger
-                    $(document).on("click",'.page-train--button', function() {
-                        requestInput.pagination.enable = true
-                        requestInput.pagination.start_cursor = $(this).attr('data-start-cursor')
-                        requestInput = JSON.stringify(requestInput,null,2)
-                        $('.notion-databases-input--input').val(requestInput)
-                        notionHqQuery(requestInput)
-                    })
-                    //prev button trigger
-                    $(document).on("click",'.pagination-button--previous', function() {
-                        requestInput.pagination.enable = true
-                        requestInput.pagination.start_cursor = $(this).attr('data-prev')
-                        requestInput = JSON.stringify(requestInput,null,2)
-                        $('.notion-databases-input--input').val(requestInput)
-                        notionHqQuery(requestInput)
-                    })
-                    //next button trigger
-                    $(document).on("click",'.pagination-button--next', function() {
-                        requestInput.pagination.enable = true
-                        requestInput.pagination.start_cursor = $(this).attr('data-next')
-                        requestInput = JSON.stringify(requestInput,null,2)
-                        $('.notion-databases-input--input').val(requestInput)
-                        notionHqQuery(requestInput)
-                    })
+                function paginationProduce(fullList, currentList, pageSize) {
+                    var promise = new Promise(
+                        function(resolve, reject) {
+                            if(fullList.length > currentList.length) {
+                                //derivations
+                                var indexNow = fullList.indexOf(currentList[0])//finding the index of first visible element
+                                var numberOfPages = Math.ceil(fullList.length/pageSize)//approx number of pages
+                                var indexPerc = indexNow/fullList.length//approx percentage covered
+                                var startCursors = filterNthElements(fullList,pageSize)//an array of all the index entries
+                                var pageNow = Math.ceil(indexPerc*numberOfPages)//current page estimated
+                                if (pageNow == 0) {//multiplication by 0 corrected
+                                    pageNow = 1
+                                }
+                                //adding pagination elements
+                                outputData += `
+                                    <nav aria-label="entry pagination notion-databases-pagination">
+                                        <ul class="pagination justify-content-md-center">
+                                `
+                                //adding previous button
+                                if(indexNow != 0) {
+                                    nextIndex = indexNow - pageSize
+                                    var prevCursor = fullList[nextIndex]
+                                    outputData += `
+                                        <li class="page-item">
+                                            <a href="#" aria-label="previous" data-prev="${prevCursor}" class="page-link notion-databases-pagination--button-previous"><span aria-hidden="true">&laquo;</span></a>
+                                        </li>
+                                    `
+                                }
+                                //adding page train
+                                var pageTrain = ''
+                                for(let i = 0; i < numberOfPages; i++) {
+                                    pageTrain += `
+                                        <li class="page-item">
+                                            <a href="#" data-start-cursor="${startCursors[i]}" data-index="${i}" class="page-link notion-databases-pagination--page-train-button">${i+1}</a>
+                                        </li>
+                                    `
+                                }
+                                outputData += pageTrain
+                                //adding next button
+                                if(pagination.hasMore) {
+                                    outputData += `
+                                        <li class="page-item">
+                                            <a href="#" aria-label="next" data-next="${pagination.nextCursor}" class="page-link notion-databases-pagination--button-next"><span aria-hidden="true">&raquo;</span></a>
+                                        </li>
+                                    `
+                                }
+                                outputData += `
+                                        </div>
+                                    </nav>
+                                `
+                                //adding page indicator: hidden
+                                outputData += `
+                                    <div class="p-2 d-none notion-databases-pagination-indicator">page ${pageNow} / ${numberOfPages}</div>
+                                `
+                                //page train button trigger
+                                $(document).on("click",'.notion-databases-pagination--page-train-button', function() {
+                                    requestInput.pagination.enable = true
+                                    requestInput.pagination.startCursor = $(this).attr('data-start-cursor')
+                                    requestInput = JSON.stringify(requestInput,null,2)
+                                    $('.notion-databases-input--input').val(requestInput)
+                                    notionHqQuery(requestInput)
+                                })
+                                //prev button trigger
+                                $(document).on("click",'.notion-databases-pagination--button-previous', function() {
+                                    requestInput.pagination.enable = true
+                                    requestInput.pagination.startCursor = $(this).attr('data-prev')
+                                    requestInput = JSON.stringify(requestInput,null,2)
+                                    $('.notion-databases-input--input').val(requestInput)
+                                    notionHqQuery(requestInput)
+                                })
+                                //next button trigger
+                                $(document).on("click",'.notion-databases-pagination--button-next', function() {
+                                    requestInput.pagination.enable = true
+                                    requestInput.pagination.startCursor = $(this).attr('data-next')
+                                    requestInput = JSON.stringify(requestInput,null,2)
+                                    $('.notion-databases-input--input').val(requestInput)
+                                    notionHqQuery(requestInput)
+                                })
+                                resolve(pageNow)
+                            }
+                        }
+                    )
+                    return promise
                 }
+                paginationProduce(fullList, currentList, pageSize).then(
+                    function(pageNow) {
+                        //focus on pageNow
+                        $('.notion-databases-pagination--page-train-button[data-index="'+(pageNow-1)+'"]').addClass('active')
+                    }
+                )
+                //page load button on each entry
                 $(document).on('click','.page-load-button',function() {
                     var requestInput = {
                         function: 'pagesQuery',
@@ -418,10 +442,10 @@ function notionHqQuery(requestInput) {
                             pageId: $(this).attr('data-id')
                         },
                         output: {
-                            element: $('#pages-output-element').val(),
+                            element: $('.notion-pages-input--output-element').val(),
                             console: {
-                                enable: false,
-                                element: '.notion-hq-output--formatted'
+                                enable: $('.notion-pages-input--console-enable').is(':checked'),
+                                element: '.notion-hq-output--formatted'//not planned to change
                             }
                         }
                     }
@@ -429,6 +453,7 @@ function notionHqQuery(requestInput) {
                     notionHqQuery(requestInput)
                     $('#page-id').val($(this).attr('data-id'))
                 })
+                $('.notion-hq-breadcrumbs').html('root/database/')
             }//databasesQuery end
             //pagesQuery
             if(responseOutput.function == 'pagesQuery'){
@@ -451,8 +476,8 @@ function notionHqQuery(requestInput) {
                         `
                     }
                 }
-                var _outputDataChildren = data
-                var _outputData = `
+                var outputDataChildren = data
+                var outputData = `
                     <div class="page">
                         <div class="page-header">
                             <div class="page-header--breadcrumb mb-3">
@@ -470,16 +495,16 @@ function notionHqQuery(requestInput) {
                             </div>
                         </div>
                         <div class="page-body">
-                            ${_outputDataChildren}
+                            ${outputDataChildren}
                         </div>    
                     </div>
                 `
-                $('.notion-hq-breadcrumbs').html('database/'+responseRawData[0].id)
+                $('.notion-hq-breadcrumbs').html('root/database/'+responseRawData[0].id)
             }//pagesQuery end
             //outputing the data
-            $(responseOutput.output.element).html(_outputData)
+            $(responseOutput.output.element).html(outputData)
             //on page console
-            if(responseOutput.output.console.enable) {//enable console and diagnostics
+            if(responseOutput.output.console.enable) {
                 var formatterConfig = {
                     hoverPreviewEnabled: false,
                     hoverPreviewArrayCount: 100,
@@ -494,8 +519,6 @@ function notionHqQuery(requestInput) {
                 //const formatter = new JSONFormatter([{xhr}, {status}, {result}],3,formatterConfig);
                 const formatter = new JSONFormatter({xhr},3,formatterConfig);
                 $(responseOutput.output.console.element).html(formatter.render()).show()
-            }else{
-                $(responseOutput.output.console.element).html('').hide()
             }
         }
     ).catch(
