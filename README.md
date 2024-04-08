@@ -16,22 +16,51 @@
 </h2>
 <p>
     <ul>
-    <li>~Table fiter and sort~</li>
-    <li>saving data as cookies</li>
-    <li>Loading spinners and placeholders</li>
-    <li>design and ui, bootstrap and markdown</li>
-    <li>icons and fonts</li>
-    <li>barba</li>
-    <br/>
-    <li>Error management and debugging</li>
-    <li>Compacting code, testing and compatibility, security</li>
-    <li>speed checking and performance</li>
-    <br/>
-    <li>A unified interface for data collection</li>
-    <li>integration of php get components and page systems</li>
-    <li>Page fetch, Page details fetch</li>
-    <li>Search widget, suggestions</li>
-    <li>Users fetch, logins, web editor and publisher</li>
-    <li>Feedback form using notion api</li>
+        <li>Table fiter and sort</li>
+        <li>saving data as cookies or memory</li>
+        <li>Loading spinners, progresses and placeholders</li>
+        <li>design and ui, bootstrap and markdown</li>
+        <li>Page UI structure and theme</li>
+        <li>More pages and documentation probably copy</li>
+        <li>Keep it simple and single paged</li>
+        <li>Dark theme</li>
+        <li>
+        <li>icons and fonts</li>
+        <li>barba</li>
+        <br/>
+        <li>Error management and debugging</li>
+        <li>Compacting code, testing and compatibility, security</li>
+        <li>speed checking and performance</li>
+        <br/>
+        <li>A unified interface for data collection</li>
+        <li>integration of php get components and page systems</li>
+        <li>Search widget, suggestions</li>
+        <li>Users fetch, logins, web editor and publisher</li>
+        <li>Feedback forms using notion api</li>
+        <li>Contact forms</li>
+        <br/>
+        <li>Server and domain</li>
+        <li>Cloudflare services</li>
+        <li>Analytics and ads</li>
+        <li>Content</li>
     </ul>
-    </p>
+</p>
+<h2>
+    Use
+</h2>
+<p>
+    <ul>
+        <li>Modules</li>
+        <li>Fetch</li>
+        <li>Promise</li>
+        <li>Sass and Bootstrap's sass theme and variables mod</li>
+    </ul>
+</p><h2>
+    Others
+</h2>
+<p>
+    <ul>
+        <li>Telegram API</li>
+        <li>Inspiration for UI</li>
+    </ul>
+</p>
