@@ -16,11 +16,14 @@ form {
   border: 1px #e2e3e5 solid;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-.header {
-  width: 100%;
+.header, .header .col {
   height: 200px;
 }
-.header img {
+.header .col {
+  width: 100%;
+  height: 100%;
+}
+.header .col img {
   width: 100%;
   height: 100%;
   object-fit: cover;

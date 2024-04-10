@@ -453,7 +453,7 @@ function notionHqQuery(requestInput) {
                     notionHqQuery(requestInput)
                     $('#page-id').val($(this).attr('data-id'))
                 })
-                $('.notion-hq-breadcrumbs').html('root/database/')
+                $('.notion-hq-breadcrumbs .col').html('root/database/')
             }//databasesQuery end
             //pagesQuery
             if(responseOutput.function == 'pagesQuery'){
@@ -499,7 +499,7 @@ function notionHqQuery(requestInput) {
                         </div>    
                     </div>
                 `
-                $('.notion-hq-breadcrumbs').html('root/database/'+responseRawData[0].id)
+                $('.notion-hq-breadcrumbs .col').html('root/database/'+responseRawData[0].id)
             }//pagesQuery end
             //outputing the data
             $(responseOutput.output.element).html(outputData)
