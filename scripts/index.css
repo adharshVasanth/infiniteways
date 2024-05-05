@@ -28,6 +28,9 @@ form {
   height: 100%;
   object-fit: cover;
 }
+.main {
+  background: url('../assets/images/backgrounds/bcc1.PNG');
+}
 .notion-hq-input, .notion-hq-output {
   background-color: #f2f2f2;
   padding: 20px;
