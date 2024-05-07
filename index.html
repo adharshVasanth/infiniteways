@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>
+            infiniteWays: A new perspective
+        </title>
+        <meta charset="utf-8" />
+        <meta name="description" content="This is the homepage of the blog for infiniteWays. This is a single page application with only basic functionalities" />
+        <meta name="author" content="adharshVasanth" />
+        <meta name="keywords" content="infiniteWays, free-life" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:description" content="This is the homepage of the blog for infiniteWays. This is a single page application with only basic functionalities" />
+        <meta property="og:image" content="assets/logos/inways_logo_exp.PNG" />
+        <meta property="og:title" content="infiniteWays: A new perspective" />
+        <link rel="icon" href="assets/images/favicon/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="assets/images/favicon/apple-touch-icon.png" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/css/sortable-theme-minimal.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap' type='text/css'>
+        <link rel="stylesheet" href="scripts/index.css" />
+        <script src="https://cdn.jsdelivr.net/npm/json-formatter-js@2.3.4/dist/json-formatter.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="scripts/index.js" defer></script>
+        <script>
+            $(document).ready(function() {
+                //calling notionHqQuery on document ready
+                var requestInput = `{
+                    "function": "databasesQuery",
+                    "data": {
+                        "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+                        "entryCategory": "all",
+                        "entryArchivedInclude": true,
+                        "entryMaxNumber": 5,
+                        "entryDisplay": "table"
+                    },
+                    "output": {
+                        "element": ".notion-databases-output",
+                        "console": {
+                        "enable": false,
+                        "element": ".notion-hq-output--formatted"
+                        }
+                    },
+                    "pagination": {
+                    }
+                }`
+                notionHqQuery(requestInput)
+            })
+        </script>
+    </head>
+    <body>
+        <!--Offcanvas navigation panel-->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-navigation" aria-labelledby="offcanvas-navigation-label">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvas-navigation-label">Navigation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="offcanvas-text">
+                    <nav class="nav flex-column nav-pills">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" href="database">Database</a>
+                        <a class="nav-link" href="test">Test</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">About</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Contact</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Newsletter</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Theme</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Documentation</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!--Main navbar at the top-->
+        <div class="navbar bg-body-tertiary px-3" role="navigation">
+            <div class="container-fluid justify-content-between">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navigation" aria-controls="offcanvas-navigation">
+                    <i class="bi bi-layout-text-sidebar"></i>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img style="height: 40px;" src="assets/images/logos/inways_logo_exp.PNG"/>
+                </a>
+            </div>
+        </div>
+        <!--Main content of the webpage-->
+        <div class="main container-fluid" style="padding: 0.05px">
+            <!--Actual content-->
+            <div class="content row mx-auto">
+                <div class="col p-0">
+                    <!--title-->
+                    <div class="title notion-hq-breadcrumbs row mx-auto p-3 bg-body-tertiary">
+                        <div class="col">
+                            root/
+                        </div>
+                    </div>
+                    <!--header1-->
+                    <div class="header row mx-auto">
+                        <div class="col p-0">
+                            <img src="assets/images/backgrounds/austin-neill-1t0yY9lSpyE-unsplash.jpg"/>
+                        </div>
+                        <img src="assets/images/inways_logo_w_caption.png" class="position-absolute w-50 top-50 start-50 translate-middle"/>
+                    </div>
+                    <div class="content-content bg-body-tertiary p-5">
+                        <h1>
+                            Welcome
+                        </h1>
+                        <br/>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum veritatis accusamus ipsum quae asperiores, aliquam deleniti hic adipisci quo sunt. Voluptates hic quis at, in qui recusandae excepturi repellendus perspiciatis.
+                        </p>
+                    </div>
+                    <!--header2-->
+                    <div class="header row mx-auto">
+                        <div class="col p-0">
+                            <img src="assets/images/backgrounds/best-off-road-trails-southeast-4x4-wheels-and-tires.jpg"/>
+                        </div>
+                    </div>
+                    <div class="content-content">
+                        <div class="notion-hq-output notion-databases-output" style="display:none;"></div>
+                    </div>
+                    <div class="content-content">
+                        <div class=" notion-hq-output notion-pages-output" style="display:none;"></div>
+                    </div>
+                    <div class="content-content">
+                        <div class="notion-hq-output--formatted" style="display:none;"></div>
+                    </div>
+                    <!--header3-->
+                    <div class="header row mx-auto">
+                        <div class="col p-0">
+                            <img src="assets/images/backgrounds/e56b573d0cd16d7b03083d8fbc582ef219c274a7.jpeg"/>
+                        </div>
+                    </div>
+                    <input class="d-none notion-pages-input--output-element" value=".notion-pages-output" />
+                    <div class="d-none form-check form-switch mb-3">
+                        <input class="form-check-input notion-pages-input--console-enable" type="checkbox" role="switch" id="console-enable" unchecked>
+                        <label class="form-check-label" for="console-enable">consoleEnable</label>
+                    </div>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="footer row mx-auto p-5 bg-body-tertiary">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" target="_self" title="Privacy policy">Privacy policy</a><br/>
+                            <a href="#" target="_self" title="Cookie policy">Cookie policy</a><br/>
+                            <a href="#" target="_self" title="Terms of use">Terms of use</a><br/>
+                            <a href="#" target="_self" title="Disclaimer">Disclaimer</a><br/>
+                            <a href="#" target="_self" title="Sitemap">Sitemap</a><br/>
+                        </div>
+                        <div class="col">
+                            <a href="#" target="_self" title="About">About</a><br/>
+                            <a href="#" target="_self" title="Contact">Contact</a><br/>
+                            <a href="#" target="_self" title="Newsletter">Newsletter</a><br/>
+                            <a href="#" target="_self" title="Documentation">Documentation</a><br/>
+                            <a href="#" target="_self" title="Theme">Theme</a><br/>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h6>Powered by</h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/Bootstrap_logo.svg" />
+                                        </div>
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/Google-Fonts-Logo.png" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/cloudflare-workers-logo.svg" />
+                                        </div>
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/jquery_logo.gif" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/Notion-logo.svg" />
+                                        </div>
+                                        <div class="col">
+                                            <img style="height:20px" src="assets/images/logos/a267aac-notion-devs-logo.svg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-5">
+                        <div class="text-center col">
+                            adharsh.vasanth copyright © 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

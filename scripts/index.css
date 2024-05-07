@@ -11,13 +11,8 @@ form {
   border: 1px #e2e3e5 solid;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-.footer {
-  background: #f2f2f2;
-  border: 1px #e2e3e5 solid;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
 .header, .header .col {
-  height: 200px;
+  height: 400px;
 }
 .header .col {
   width: 100%;
@@ -28,24 +23,15 @@ form {
   height: 100%;
   object-fit: cover;
 }
-.main {
-  background: url('../assets/images/backgrounds/bcc1.PNG');
-}
 .notion-hq-input, .notion-hq-output {
   background-color: #f2f2f2;
   padding: 20px;
-  border: 1px #e2e3e5 solid;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   overflow: auto;
 }
 .notion-hq-output--formatted{
   background-color: #1f1f1f;
   display: block;
   padding: 20px;
-  border: 1px #e2e3e5 solid;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
   white-space: -pre-wrap; /* Opera 4-6 */
   white-space: -o-pre-wrap; /* Opera 7 */
