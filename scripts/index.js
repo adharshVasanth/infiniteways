@@ -277,7 +277,7 @@ function notionHqQuery(requestInput) {
                                         <h5 class="card-title mb-3">${responseData[i].icon.emoji}&nbsp;${responseData[i].properties.Name.title[0].plain_text}&nbsp;&nbsp;<span class="badge bg-secondary">${responseData[i].properties.Category.select.name}</span>&nbsp;${archiveText}</h5>
                                         <h6 class="card-subtitle mb-2 text-body-secondary"><img src="${responseData[i].properties.Author.people[0].avatar_url}" style="width:20px" alt="Author image" class="rounded-circle"/>&nbsp;&nbsp;${responseData[i].properties.Author.people[0].name}</h6>
                                         <p class="card-text"><code class="text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="time">${responseData[i].created_time}</code></p>
-                                        <a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a>
+                                        <a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="javascript:void(0);">Open</a>
                                     </div>
                                     <div class="card-footer">
                                         <code class="card-subtitle mb-2 text-muted">${responseData[i].id}</code>
@@ -293,7 +293,7 @@ function notionHqQuery(requestInput) {
                         <table class="table border border-1 post-list-table sortable-theme-minimal" data-sortable>
                             <thead>
                                 <tr>
-                                    <th class="d-none" scope="col">#</th>
+                                    <th class="d-none" scope="col">javascript:void(0);</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Author</th>
                                     <th scope="col">Category</th>
@@ -319,7 +319,7 @@ function notionHqQuery(requestInput) {
                                 <td>${archiveText}</td>
                                 <td data-value="${responseData[i].created_time}">${responseData[i].created_time}</span></td>
                                 <td class="d-none"><pre>${responseData[i].id}</pre></td>
-                                <td><a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="#">Open</a></td>
+                                <td><a data-id="${responseData[i].id}" class="btn btn-outline-primary btn-sm page-load-button" href="javascript:void(0);">Open</a></td>
                             </tr>
                         `
                     }
@@ -368,7 +368,7 @@ function notionHqQuery(requestInput) {
                                     var prevCursor = fullList[nextIndex]
                                     outputData += `
                                         <li class="page-item">
-                                            <a href="#" aria-label="previous" data-prev="${prevCursor}" class="page-link notion-databases-pagination--button-previous"><span aria-hidden="true">&laquo;</span></a>
+                                            <a href="javascript:void(0);" aria-label="previous" data-prev="${prevCursor}" class="page-link notion-databases-pagination--button-previous"><span aria-hidden="true">&laquo;</span></a>
                                         </li>
                                     `
                                 }
@@ -377,7 +377,7 @@ function notionHqQuery(requestInput) {
                                 for(let i = 0; i < numberOfPages; i++) {
                                     pageTrain += `
                                         <li class="page-item">
-                                            <a href="#" data-start-cursor="${startCursors[i]}" data-index="${i}" class="page-link notion-databases-pagination--page-train-button">${i+1}</a>
+                                            <a href="javascript:void(0);" data-start-cursor="${startCursors[i]}" data-index="${i}" class="page-link notion-databases-pagination--page-train-button">${i+1}</a>
                                         </li>
                                     `
                                 }
@@ -386,7 +386,7 @@ function notionHqQuery(requestInput) {
                                 if(pagination.hasMore) {
                                     outputData += `
                                         <li class="page-item">
-                                            <a href="#" aria-label="next" data-next="${pagination.nextCursor}" class="page-link notion-databases-pagination--button-next"><span aria-hidden="true">&raquo;</span></a>
+                                            <a href="javascript:void(0);" aria-label="next" data-next="${pagination.nextCursor}" class="page-link notion-databases-pagination--button-next"><span aria-hidden="true">&raquo;</span></a>
                                         </li>
                                     `
                                 }
@@ -451,7 +451,7 @@ function notionHqQuery(requestInput) {
                     }
                     requestInput = JSON.stringify(requestInput,null,2)
                     notionHqQuery(requestInput)
-                    $('#page-id').val($(this).attr('data-id'))
+                    $('javascript:void(0);page-id').val($(this).attr('data-id'))
                 })
                 $('.notion-hq-breadcrumbs .col').html('root/database/')
             }//databasesQuery end

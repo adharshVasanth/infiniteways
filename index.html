@@ -37,7 +37,7 @@
                         "entryCategory": "all",
                         "entryArchivedInclude": true,
                         "entryMaxNumber": 5,
-                        "entryDisplay": "table"
+                        "entryDisplay": "grid"
                     },
                     "output": {
                         "element": ".notion-databases-output",
@@ -53,7 +53,53 @@
             })
         </script>
     </head>
-    <body>
+    <body data-bs-theme="dark">
+        <!--Main navbar at the top-->
+        <div class="navbar navbar-expand-lg bg-body-secondary" role="navigation">
+            <div class="container-fluid mx-1">
+                <a class="navbar-brand" href="javascript:void(0);">
+                    <img style="height: 40px;" src="assets/images/logos/inways_logo.PNG"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navigation" aria-controls="offcanvas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapse-navbar">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="javascript:void(0);">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="database">Database</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="test">Test</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true" href="#">Documentation</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="btn-outline-success btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Theme
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:void(0);">Dark</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Bright</a></li>
+                            </ul>
+                        </li>
+                    </ul> 
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <!--Offcanvas navigation panel-->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-navigation" aria-labelledby="offcanvas-navigation-label">
             <div class="offcanvas-header">
@@ -63,61 +109,54 @@
             <div class="offcanvas-body">
                 <div class="offcanvas-text">
                     <nav class="nav flex-column nav-pills">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="javascript:void(0);">Home</a>
                         <a class="nav-link" href="database">Database</a>
                         <a class="nav-link" href="test">Test</a>
                         <a class="nav-link disabled" aria-disabled="true" href="#">About</a>
                         <a class="nav-link disabled" aria-disabled="true" href="#">Contact</a>
-                        <a class="nav-link disabled" aria-disabled="true" href="#">Newsletter</a>
-                        <a class="nav-link disabled" aria-disabled="true" href="#">Theme</a>
                         <a class="nav-link disabled" aria-disabled="true" href="#">Documentation</a>
+                        <span class="nav-link dropdown">
+                            <button class="btn-outline-success btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Theme
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:void(0);">Dark</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Bright</a></li>
+                            </ul>
+                        </span>
                     </nav>
                 </div>
-            </div>
-        </div>
-        <!--Main navbar at the top-->
-        <div class="navbar bg-body-tertiary px-3" role="navigation">
-            <div class="container-fluid justify-content-between">
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navigation" aria-controls="offcanvas-navigation">
-                    <i class="bi bi-layout-text-sidebar"></i>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <img style="height: 40px;" src="assets/images/logos/inways_logo_exp.PNG"/>
-                </a>
             </div>
         </div>
         <!--Main content of the webpage-->
         <div class="main container-fluid" style="padding: 0.05px">
             <!--Actual content-->
-            <div class="content row mx-auto">
+            <div class="content row mx-auto bg-body-tertiary">
                 <div class="col p-0">
-                    <!--title-->
-                    <div class="title notion-hq-breadcrumbs row mx-auto p-3 bg-body-tertiary">
-                        <div class="col">
-                            root/
+                    <div class="d-none title notion-hq-breadcrumbs py-3 px-5">
+                        root/
+                    </div>
+                    <div class="landing d-flex justify-content-center align-items-center"style="height:calc(100vh - 66px)">
+                        <div class="w-50">
+                            <h1 class="display-1">
+                                "
+                            </h1>
+                            <p class="h6">
+                                <figure class="text-center">
+                                    <blockquote class="blockquote">
+                                        <p>
+                                            Build what you love instead of destroying what you hate. Be the change you want to see. Happiness, strength and positivity should come from within when the surroundings are not positive. Be creative, unconventional.
+                                        </p>
+                                    </blockquote>
+                                    <figcaption class="blockquote-footer">
+                                        Someone famous in <cite title="Source Title">Source Title</cite>
+                                    </figcaption>
+                                </figure>
+                            </p>
                         </div>
                     </div>
-                    <!--header1-->
-                    <div class="header row mx-auto">
-                        <div class="col p-0">
-                            <img src="assets/images/backgrounds/austin-neill-1t0yY9lSpyE-unsplash.jpg"/>
-                        </div>
-                        <img src="assets/images/inways_logo_w_caption.png" class="position-absolute w-50 top-50 start-50 translate-middle"/>
-                    </div>
-                    <div class="content-content bg-body-tertiary p-5">
-                        <h1>
-                            Welcome
-                        </h1>
-                        <br/>
-                        <p>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum veritatis accusamus ipsum quae asperiores, aliquam deleniti hic adipisci quo sunt. Voluptates hic quis at, in qui recusandae excepturi repellendus perspiciatis.
-                        </p>
-                    </div>
-                    <!--header2-->
-                    <div class="header row mx-auto">
-                        <div class="col p-0">
-                            <img src="assets/images/backgrounds/best-off-road-trails-southeast-4x4-wheels-and-tires.jpg"/>
-                        </div>
+                    <div class="header">
+                        <img src="assets/images/backgrounds/best-off-road-trails-southeast-4x4-wheels-and-tires.jpg"/>
                     </div>
                     <div class="content-content">
                         <div class="notion-hq-output notion-databases-output" style="display:none;"></div>
@@ -128,11 +167,8 @@
                     <div class="content-content">
                         <div class="notion-hq-output--formatted" style="display:none;"></div>
                     </div>
-                    <!--header3-->
-                    <div class="header row mx-auto">
-                        <div class="col p-0">
-                            <img src="assets/images/backgrounds/e56b573d0cd16d7b03083d8fbc582ef219c274a7.jpeg"/>
-                        </div>
+                    <div class="header">
+                        <img src="assets/images/backgrounds/e56b573d0cd16d7b03083d8fbc582ef219c274a7.jpeg"/>
                     </div>
                     <input class="d-none notion-pages-input--output-element" value=".notion-pages-output" />
                     <div class="d-none form-check form-switch mb-3">
@@ -142,7 +178,8 @@
                 </div>
             </div>
             <!--Footer-->
-            <div class="footer row mx-auto p-5 bg-body-tertiary">
+            <div class="footer row mx-auto p-5 bg-body-secondary position-relative">
+                <a href="#" class="btn btn-primary btn-lg position-absolute top-0 w-auto translate-middle-y" style="right:5rem;"><i class="bi bi-arrow-up"></i></a>
                 <div class="col">
                     <div class="row">
                         <div class="col">
@@ -150,14 +187,12 @@
                             <a href="#" target="_self" title="Cookie policy">Cookie policy</a><br/>
                             <a href="#" target="_self" title="Terms of use">Terms of use</a><br/>
                             <a href="#" target="_self" title="Disclaimer">Disclaimer</a><br/>
-                            <a href="#" target="_self" title="Sitemap">Sitemap</a><br/>
                         </div>
                         <div class="col">
                             <a href="#" target="_self" title="About">About</a><br/>
                             <a href="#" target="_self" title="Contact">Contact</a><br/>
                             <a href="#" target="_self" title="Newsletter">Newsletter</a><br/>
                             <a href="#" target="_self" title="Documentation">Documentation</a><br/>
-                            <a href="#" target="_self" title="Theme">Theme</a><br/>
                         </div>
                         <div class="col">
                             <div class="row">

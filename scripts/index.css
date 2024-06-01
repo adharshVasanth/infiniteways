@@ -3,28 +3,25 @@ body {
   margin: 0px;
   font-family: 'Noto Sans Mono', monospace;
 }
+a {
+  text-decoration: none;
+}
 form {
   margin-block-end: 0px;
 }
-.navigation {
-  background: #f2f2f2;
-  border: 1px #e2e3e5 solid;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.header{
+  height: 100vh;
 }
-.header, .header .col {
-  height: 400px;
+.header--page{
+  height: 250px;
 }
-.header .col {
-  width: 100%;
-  height: 100%;
-}
-.header .col img {
+.header img, .header--page img  {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .notion-hq-input, .notion-hq-output {
-  background-color: #f2f2f2;
+  background-color: var(--bs-tertiary-bg);
   padding: 20px;
   overflow: auto;
 }

@@ -53,212 +53,281 @@
         })
     </script>
   </head>
-  <body>
-    <div class="navigation container" style="max-width:100%;">
-      <div class="row px-sm-5 py-3">
-          <div class="col text-start">
-              <img style="height: 40px;" src="../assets/images/logos/inways_logo_exp.PNG"/>
-          </div>
-      </div>
-      <div class="row px-sm-5 py-2">
-          <div class="col">
-              <a href="../database" target="_self" title="Database">Database</a>
-          </div>
-          <div class="col">
-              <a href="../test" target="_self" title="Test">Test</a>
-          </div>
-          <div class="col">
-              <a href="#" target="_self" title="About">About</a>
-          </div>
-      </div>
+  <body data-bs-theme="dark">
+    <!--Main navbar at the top-->
+    <div class="navbar navbar-expand-lg bg-body-secondary" role="navigation">
+        <div class="container-fluid mx-1">
+            <a class="navbar-brand" href="javascript:void(0);">
+                <img style="height: 40px;" src="../assets/images/logos/inways_logo.PNG"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navigation" aria-controls="offcanvas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapse-navbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../database">Database</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="javascript:void(0);">Test</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Documentation</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn-outline-success btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Theme
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="javascript:void(0);">Dark</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Bright</a></li>
+                        </ul>
+                    </li>
+                </ul> 
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="main container" style="max-width:100%;">
-      <div class="header row px-sm-5 py-2">
-        <div class="col">
-          <img src="../assets/images/backgrounds/best-off-road-trails-southeast-4x4-wheels-and-tires.jpg"/>
+    <!--Offcanvas navigation panel-->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-navigation" aria-labelledby="offcanvas-navigation-label">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvas-navigation-label">Navigation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-      </div>
-      <div class="content-title notion-hq-breadcrumbs row px-sm-5 py-2">
-        <div class="col">
-          root/test/
+        <div class="offcanvas-body">
+            <div class="offcanvas-text">
+                <nav class="nav flex-column nav-pills">
+                    <a class="nav-link" href="../">Home</a>
+                    <a class="nav-link" href="../database">Database</a>
+                    <a class="nav-link active" aria-current="page" href="javascript:void(0);">Test</a>
+                    <a class="nav-link disabled" aria-disabled="true" href="#">About</a>
+                    <a class="nav-link disabled" aria-disabled="true" href="#">Contact</a>
+                    <a class="nav-link disabled" aria-disabled="true" href="#">Documentation</a>
+                    <span class="nav-link dropdown">
+                        <button class="btn-outline-success btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Theme
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="javascript:void(0);">Dark</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);">Bright</a></li>
+                        </ul>
+                    </span>
+                </nav>
+            </div>
         </div>
-      </div>
-      <div class="content px-5">
-        <div class="container content-content" style="max-width:100%">
-          <div class="row my-3">
-            <div class="col-md-4">
-              <form class="notion-databases-input notion-hq-input" onSubmit="return false">
-                <span class="d-block mb-3 h4">databasesQuery</span>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control notion-databases-input--database-id" id="database-id" placeholder="databaseId">
-                  <label for="database-id">databaseId</label>
-                </div>
-                <div class="mb-3">
-                  <label for="entry-category-select" class="form-label">entryCategory</label>
-                  <select class="form-select notion-databases-input--entry-category-select" id="entry-category-select" aria-label="entryCategory">
-                    <option selected value="all">All</option>
-                    <option value="Hello">Hello</option>
-                    <option value="You">You</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Hey">Hey</option>
-                  </select>
-                </div>
-                <div class="form-check form-switch mb-3">
-                  <input class="form-check-input notion-databases-input--entry-archived-include" type="checkbox" role="switch" id="entry-archived-include" checked>
-                  <label class="form-check-label" for="entry-archived-include">entryArchivedInclude</label>
-                </div>
-                <div class="mb-3">
-                  <label for="entry-max-number" class="form-label">entryMaxNumber: <span class="entry-max-number-number">5</span></label>
-                  <input type="range" value="5" class="form-range notion-databases-input--entry-max-number" min="3" max="10" step="1" id="entry-max-number">
-                </div>
-                <div class="btn-group mb-3" id="entry-display" role="group" aria-label="entryDisplay">
-                  <input type="radio" class="notion-databases-input--entry-display btn-check" name="entry-display" value="grid" id="entry-display--grid" autocomplete="off" checked>
-                  <label class="btn btn-outline-primary" for="entry-display--grid"><i class="bi-grid"></i></label>
-                  <input type="radio" class="notion-databases-input--entry-display btn-check" name="entry-display" value="table" id="entry-display--table" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="entry-display--table"><i class="bi-table"></i></label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value=".notion-databases-output" class="form-control notion-databases-input--output-element" id="output-element" placeholder="outputElement">
-                  <label for="output-element">outputElement</label>
-                </div>
-                <div class="form-check form-switch mb-3">
-                  <input class="form-check-input notion-databases-input--console-enable" type="checkbox" role="switch" id="console-enable" checked>
-                  <label class="form-check-label" for="console-enable">consoleEnable</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value=".notion-hq-output--formatted" class="form-control notion-databases-input--console-element" id="console-element" placeholder="consoleElement">
-                  <label for="console-element">consoleElement</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <textarea readonly id="notion-databases-input--input" class="form-control form-control-plaintext notion-databases-input--input" placeholder="input">
-    {
-      "function": "databasesQuery",
-      "data": {
-        "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
-        "entryCategory": "all",
-        "entryArchivedInclude": true,
-        "entryMaxNumber": 5,
-        "entryDisplay": "grid"
-      },
-      "output": {
-        "element": ".notion-databases-output",
-        "console": {
-          "enable": true,
-          "element": ".notion-hq-output--formatted"
-        }
-      },
-      "pagination": {
-      }
-    }
-                  </textarea>
-                  <label for="notion-databases-input--input">Data sent</label>
-                </div>
-                <button class="notion-databases-trigger--trigger btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
-                <button class="notion-databases-trigger--reset btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
-              </form>
-            </div>
-            <div class="col-md-8">
-              <div class="notion-databases-output notion-hq-output" style="display:none;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="container content-content" style="max-width: 100%;">
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <form class="notion-pages-input notion-hq-input" onSubmit="return false">
-                <span class="d-block mb-3 h4">pagesQuery</span>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value="ba041281-b519-4e09-9964-e24e26c122b2" class="form-control notion-pages-input--page-id" id="page-id" placeholder="pageId">
-                  <label for="page-id">pageId</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value=".notion-pages-output" class="form-control notion-pages-input--output-element" id="pages-output-element" placeholder="pagesOutputElement">
-                  <label for="pages-output-element">pagesOutputElement</label>
-                </div>
-                <div class="form-check form-switch mb-3">
-                  <input class="form-check-input notion-pages-input--console-enable" type="checkbox" role="switch" id="console-enable" checked>
-                  <label class="form-check-label" for="console-enable">consoleEnable</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input type="text" disabled value=".notion-hq-output--formatted" class="form-control notion-pages-input--console-element" id="console-element" placeholder="consoleElement">
-                  <label for="console-element">consoleElement</label>
-                </div>
-                <button class="notion-pages-trigger--trigger btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
-              </form>
-            </div>
-            <div class="col-md-8">
-              <div class="notion-pages-output notion-hq-output" style="display:none;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="container content-content" style="max-width:100%">
-          <div class="row mb-3">
-            <div class="col">
-              <div class="content-content notion-hq-output--formatted" style="display:none;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer row px-sm-5 py-3">
-        <div class="col">
-          <div class="row">
-            <div class="col">
-              <a href="#" target="_self" title="Privacy policy">Privacy policy</a><br/>
-              <a href="#" target="_self" title="Cookie policy">Cookie policy</a><br/>
-              <a href="#" target="_self" title="Terms of use">Terms of use</a><br/>
-              <a href="#" target="_self" title="Disclaimer">Disclaimer</a><br/>
-              <a href="#" target="_self" title="Sitemap">Sitemap</a><br/>
-            </div>
-            <div class="col">
-              <a href="#" target="_self" title="About">About</a><br/>
-              <a href="#" target="_self" title="Contact">Contact</a><br/>
-              <a href="#" target="_self" title="Newsletter">Newsletter</a><br/>
-              <a href="#" target="_self" title="Documentation">Documentation</a><br/>
-              <a href="#" target="_self" title="Theme">Theme</a><br/>
-            </div>
-            <div class="col">
-              <div class="row">
-                <div class="col">
-                  <h6>Powered by</h6>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <div class="row">
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/Bootstrap_logo.svg" />
-                    </div>
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/Google-Fonts-Logo.png" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/cloudflare-workers-logo.svg" />
-                    </div>
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/jquery_logo.gif" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/Notion-logo.svg" />
-                    </div>
-                    <div class="col">
-                      <img style="height:20px" src="../assets/images/logos/a267aac-notion-devs-logo.svg" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row py-3">
-            <div class="text-center col">
-              adharsh.vasanth copyright © 2024
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </body>
+    <!--Main content of the webpage-->
+    <div class="main container-fluid" style="padding: 0.05px">
+        <!--Actual content-->
+        <div class="content row mx-auto bg-body-tertiary">
+            <div class="col p-0">
+                <div class="header--page">
+                    <img src="../assets/images/backgrounds/best-off-road-trails-southeast-4x4-wheels-and-tires.jpg"/>
+                </div>
+                <div class="title notion-hq-breadcrumbs px-5 py-3">
+                    root/test
+                </div>
+                <div class="content-content--page">
+                    <div class="page-emoji p-5">
+                        <span class="display-1">
+                          🔨
+                        </span>
+                    </div>
+                    <div class="page-title px-5 pb-3">
+                        <span class="h1">
+                            Test
+                        </span>
+                    </div>
+                    <div class="page-description px-5">
+                        <small class="text-body-secondary">
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusantium dignissimos exercitationem sit officia voluptatem aliquid atque odit fuga necessitatibus, dicta dolorem veniam animi perferendis magnam cupiditate distinctio autem iste? Perferendis?
+                        </small>
+                    </div>
+                    <div class="page-content p-5 container-fluid">
+                      <div class="row my-3">
+                        <div class="col-md-4">
+                          <form class="notion-databases-input notion-hq-input" onSubmit="return false">
+                            <span class="d-block mb-3 h4">databasesQuery</span>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value="4153efddccc84e3a80012ac7d36bbb2a" class="form-control notion-databases-input--database-id" id="database-id" placeholder="databaseId">
+                              <label for="database-id">databaseId</label>
+                            </div>
+                            <div class="mb-3">
+                              <label for="entry-category-select" class="form-label">entryCategory</label>
+                              <select class="form-select notion-databases-input--entry-category-select" id="entry-category-select" aria-label="entryCategory">
+                                <option selected value="all">All</option>
+                                <option value="Hello">Hello</option>
+                                <option value="You">You</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Hey">Hey</option>
+                              </select>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                              <input class="form-check-input notion-databases-input--entry-archived-include" type="checkbox" role="switch" id="entry-archived-include" checked>
+                              <label class="form-check-label" for="entry-archived-include">entryArchivedInclude</label>
+                            </div>
+                            <div class="mb-3">
+                              <label for="entry-max-number" class="form-label">entryMaxNumber: <span class="entry-max-number-number">5</span></label>
+                              <input type="range" value="5" class="form-range notion-databases-input--entry-max-number" min="3" max="10" step="1" id="entry-max-number">
+                            </div>
+                            <div class="btn-group mb-3" id="entry-display" role="group" aria-label="entryDisplay">
+                              <input type="radio" class="notion-databases-input--entry-display btn-check" name="entry-display" value="grid" id="entry-display--grid" autocomplete="off" checked>
+                              <label class="btn btn-outline-primary" for="entry-display--grid"><i class="bi-grid"></i></label>
+                              <input type="radio" class="notion-databases-input--entry-display btn-check" name="entry-display" value="table" id="entry-display--table" autocomplete="off">
+                              <label class="btn btn-outline-primary" for="entry-display--table"><i class="bi-table"></i></label>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value=".notion-databases-output" class="form-control notion-databases-input--output-element" id="output-element" placeholder="outputElement">
+                              <label for="output-element">outputElement</label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                              <input class="form-check-input notion-databases-input--console-enable" type="checkbox" role="switch" id="console-enable" checked>
+                              <label class="form-check-label" for="console-enable">consoleEnable</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value=".notion-hq-output--formatted" class="form-control notion-databases-input--console-element" id="console-element" placeholder="consoleElement">
+                              <label for="console-element">consoleElement</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <textarea readonly id="notion-databases-input--input" class="form-control form-control-plaintext notion-databases-input--input" placeholder="input">
+                {
+                  "function": "databasesQuery",
+                  "data": {
+                    "databaseId": "4153efddccc84e3a80012ac7d36bbb2a",
+                    "entryCategory": "all",
+                    "entryArchivedInclude": true,
+                    "entryMaxNumber": 5,
+                    "entryDisplay": "grid"
+                  },
+                  "output": {
+                    "element": ".notion-databases-output",
+                    "console": {
+                      "enable": true,
+                      "element": ".notion-hq-output--formatted"
+                    }
+                  },
+                  "pagination": {
+                  }
+                }
+                              </textarea>
+                              <label for="notion-databases-input--input">Data sent</label>
+                            </div>
+                            <button class="notion-databases-trigger--trigger btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
+                            <button class="notion-databases-trigger--reset btn-lg btn btn-primary" type="button" type="submit"><i class="bi-arrow-clockwise"></i></button>
+                          </form>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="notion-databases-output notion-hq-output" style="display:none;"></div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-4">
+                          <form class="notion-pages-input notion-hq-input" onSubmit="return false">
+                            <span class="d-block mb-3 h4">pagesQuery</span>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value="ba041281-b519-4e09-9964-e24e26c122b2" class="form-control notion-pages-input--page-id" id="page-id" placeholder="pageId">
+                              <label for="page-id">pageId</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value=".notion-pages-output" class="form-control notion-pages-input--output-element" id="pages-output-element" placeholder="pagesOutputElement">
+                              <label for="pages-output-element">pagesOutputElement</label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                              <input class="form-check-input notion-pages-input--console-enable" type="checkbox" role="switch" id="console-enable" checked>
+                              <label class="form-check-label" for="console-enable">consoleEnable</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                              <input type="text" disabled value=".notion-hq-output--formatted" class="form-control notion-pages-input--console-element" id="console-element" placeholder="consoleElement">
+                              <label for="console-element">consoleElement</label>
+                            </div>
+                            <button class="notion-pages-trigger--trigger btn-lg btn btn-primary" type="button" type="submit"><i class="bi-search"></i></button>
+                          </form>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="notion-pages-output notion-hq-output" style="display:none;"></div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="content-content notion-hq-output--formatted" style="display:none;"></div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Footer-->
+        <div class="footer row mx-auto p-5 bg-body-secondary position-relative">
+          <a href="#" class="btn btn-primary btn-lg position-absolute top-0 w-auto translate-middle-y" style="right:5rem;"><i class="bi bi-arrow-up"></i></a>
+          <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <a href="#" target="_self" title="Privacy policy">Privacy policy</a><br/>
+                        <a href="#" target="_self" title="Cookie policy">Cookie policy</a><br/>
+                        <a href="#" target="_self" title="Terms of use">Terms of use</a><br/>
+                        <a href="#" target="_self" title="Disclaimer">Disclaimer</a><br/>
+                    </div>
+                    <div class="col">
+                        <a href="#" target="_self" title="About">About</a><br/>
+                        <a href="#" target="_self" title="Contact">Contact</a><br/>
+                        <a href="#" target="_self" title="Newsletter">Newsletter</a><br/>
+                        <a href="#" target="_self" title="Documentation">Documentation</a><br/>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <h6>Powered by</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/Bootstrap_logo.svg" />
+                                    </div>
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/Google-Fonts-Logo.png" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/cloudflare-workers-logo.svg" />
+                                    </div>
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/jquery_logo.gif" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/Notion-logo.svg" />
+                                    </div>
+                                    <div class="col">
+                                        <img style="height:20px" src="../assets/images/logos/a267aac-notion-devs-logo.svg" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="text-center col">
+                        adharsh.vasanth copyright © 2024
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
